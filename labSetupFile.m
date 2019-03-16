@@ -90,9 +90,9 @@ L.addLabPart('ErrPlots',fullfile('Lab 07','ErrPlots_Grader.m'));    % ditto
 
 
 % Lab 8
-L.addLab(8,datetime(2019,3,5,16,0,0),'C++');        % the integer value is used as a unique integer identifier 
-L.addLabPart('FBC_Deriv',fullfile('Lab 08','FBC_Deriv_Grader.m'));     
-L.addLabPart('AdaptiveInt',fullfile('Lab 08','AdaptiveInt_Grader.m'));            % ditto
+L.addLab(9,datetime(2019,3,18,16,0,0),'C++');        % the integer value is used as a unique integer identifier 
+L.addLabPart('FBC_Deriv',fullfile('Lab 09','FBC_Deriv_Grader.m'));     
+L.addLabPart('AdaptiveInt',fullfile('Lab 09','AdaptiveInt_Grader.m'));            % ditto
 
 
 
