@@ -282,15 +282,14 @@ classdef AutograderGUI < handle
             end
             
             % Call programSetup            
-            programSetup(labNum, dueDate, roster, labParts, regrade, ...
-                manual, pseudoDate);
+            programSetup(self.currentLab, labParts, roster, regrade, manual, pseudoDate);
             
             % show finished message
             uiwait(msgbox(['Lab ',num2str(labNum),' grading complete!'],...
                 'Grading Complete','help','modal'));
-%             self.settingsGUI.grade.String = 'Grade';
-%             self.settingsGUI.grade.Enable = 'on';
-%             self.settingsGUI.grade.BackgroundColor = 'white';
+            self.settingsGUI.grade.String = 'Grade';
+            self.settingsGUI.grade.Enable = 'on';
+            self.settingsGUI.grade.BackgroundColor = 'white';
 
         end % end function gradeLab
         

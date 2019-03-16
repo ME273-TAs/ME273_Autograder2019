@@ -1,5 +1,4 @@
-function outFile = programSetup(labNum, dueDate, roster, labParts,...
-    regrade, manualGrading, pseudoDate)
+function outFile = programSetup(currentLab, labParts, roster, regrade, manualGrading, pseudoDate)
 %============================================BEGIN-HEADER=====
 % FILE: programSetup.m
 % AUTHOR: Caleb Groves
@@ -42,9 +41,22 @@ function outFile = programSetup(labNum, dueDate, roster, labParts,...
 % VERSION HISTORY TRACKED WITH GIT
 %
 %==============================================END-HEADER======
+% split some of the inputs
+labNum = currentLab.num;
+dueDate = currentLab.dueDate;
 
 % run config file
 configVars = configAutograder(labNum);
+
+% check for compatability on this machine (C++ labs must be graded with
+% linux)
+if strcmp(currentLab.language,'C++') && ispc == 1
+    uiwait(errordlg(['ERROR: The current grading system only allows compiling ',...
+        'and running .cpp files on a Linux machine. You must use the Linux computers ',...
+        'in the 4th floor CB CAEDM or the 1st floor EB CAEDM to grade this Lab.'],...
+        'C++ Lab Grading','modal'));
+    return; 
+end
 
 % Get most recent file in the path for the lab files
 [labPath, archivesPath, prevGraded] = getOrCreateLabRecord(labNum, ...
@@ -52,15 +64,15 @@ configVars = configAutograder(labNum);
 
 % If original grading (no file to read in)
 if ischar(prevGraded)
-    master = autograder(labNum, dueDate, roster, configVars, labParts, 0, ...
+    master = autograder(currentLab, roster, configVars, labParts, 0, ...
         manualGrading, pseudoDate); % call without passing in a file
 else % if a table is read in
-    master = autograder(labNum, dueDate, roster, configVars, labParts, 0, ...
+    master = autograder(currentLab, roster, configVars, labParts, 0, ...
         manualGrading, pseudoDate, prevGraded); % always do original grading first
 end
 
 if regrade % if we're going to grade resubmissions
-    master = autograder(labNum, dueDate, roster, configVars, labParts, 1, ...
+    master = autograder(currentLab, roster, configVars, labParts, 1, ...
         manualGrading, pseudoDate, master); % run in regrading mode with output generated
     % by original grading run, above
 end
