@@ -64,7 +64,7 @@ elseif ~isempty(dynamic_csv) % if there is a dynamic file
     end
     
     % read in the current_csv to a table
-    dynamicTable = readtable(fullfile(dynamic_csv.folder,dynamic_csv.name));
+    dynamicTable = readtable(fullfile(labPath,dynamic_csv.name));
     % convert dynamic to static
     % assign to prevGraded
     gradesTable = dynamicToStatic(dynamicTable, configVars);
@@ -73,7 +73,7 @@ elseif ~isempty(dynamic_csv) % if there is a dynamic file
         
         % get the most recent static
         mostRecentStaticFile = getMostRecentStatic(static_csvs);
-        mostRecentStatic = readtable(fullfile(mostRecentStaticFile.folder,...
+        mostRecentStatic = readtable(fullfile(archivesPath,...
             mostRecentStaticFile.name));
         % run the comparison between the current and archived .csv's and
         % log the changes
@@ -91,7 +91,7 @@ elseif isempty(dynamic_csv) && ~isempty(static_csvs)
     % use that as prevGraded
     recentFile = getMostRecentStatic(static_csvs);
     
-    gradesTable = readtable(fullfile(recentFile.folder,recentFile.name));
+    gradesTable = readtable(fullfile(archivesPath,recentFile.name));
 end
 
 end % end of function

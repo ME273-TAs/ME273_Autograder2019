@@ -43,7 +43,7 @@ end
 oldFiles = dir(fullfile(grade_dir,'*_*'));
 
 for i = 1:length(oldFiles)
-    delete(fullfile(oldFiles(i).folder,oldFiles(i).name));
+    delete(fullfile(grade_dir,oldFiles(i).name))
 end
 
 % Get all files is submission directory with submission tag
@@ -51,7 +51,7 @@ subFiles = dir(fullfile(sub_dir,'*_*'));
 
 % Copy the files over to the grading directory
 for i = 1:length(subFiles)
-    copyfile(fullfile(subFiles(i).folder,subFiles(i).name),grade_dir);
+    copyfile(fullfile(sub_dir,subFiles(i).name),grade_dir)
 end
 
 % In the grading directory:
