@@ -49,7 +49,6 @@ function linkedTable = roster_linker(submissionsTable, roster, ...
 % VERSION HISTORY TRACKED WITH GIT
 %
 %==============================================END-HEADER======
-
 % Initialize variables for first time grading
 firstTimeGrading = 1;
 prevGraded = 'none';
@@ -112,10 +111,6 @@ for i = 1:m
     % label the lab part name regardless of whether or not there is a file
     % submission
     rosterTable.PartName{i} = partName;
-    
-    if rosterTable.CourseID(i) == 1077 || rosterTable.CourseID(i) == 3221
-        'bad'
-    end
     
     % Get or assign student submission deadlines
     

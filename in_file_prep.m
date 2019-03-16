@@ -7,7 +7,7 @@ function subFiles = in_file_prep(sub_dir)
 %
 % PURPOSE:
 %   Prepares a directory of student submissions downloaded from Google
-%   Drive to be read as Matlab functions and graded. 
+%   Drive to be read as Matlab functions and graded.
 %
 % INPUTS:
 %   Directory of the student submissions to be read
