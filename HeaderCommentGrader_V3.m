@@ -53,7 +53,7 @@ CommentFeedback = '';
 error = 0;
 
 
-% try                             % TRY structure used to catch errors
+try                             % TRY structure used to catch errors
 
     % BUILD THE CONTENT VARIABLE - a cell array containing all of the file's text 
     f = fopen(filename);        % open the file
@@ -194,12 +194,9 @@ error = 0;
 
 
 
-% catch ERR
-%   displayError(ERR)
-%   error = 1;
-%   
-% end
-%   
+catch ERR
+    ERR
+end
 
 
 end

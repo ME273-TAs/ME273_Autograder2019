@@ -1,12 +1,11 @@
-function [Score, Feedback] = FBC_Deriv_Grader(filename)
+function [Score, Feedback] = Plate_Grader(filename)
 %--------------------------------------------------------------
-% FILE: FBC_Deriv_Grader.m (FOR C++ VERSION OF THIS ASSIGNMENT)
+% FILE: Plate_Grader.m
 % AUTHOR: Jared Oliphant
-% DATE: 3/15/2019
+% DATE: 3/28/2019
 %
 % PURPOSE: a grader file that will allow you compile and run .cpp files
-% within MATLAB; Other than that it is essentially the same as the previous
-% FBC_Deriv Grader for MATLAB
+% within MATLAB;
 %
 % INPUTS:
 % a filename corresponding to a student's code
@@ -24,7 +23,12 @@ function [Score, Feedback] = FBC_Deriv_Grader(filename)
 %
 %--------------------------------------------------------------
 % Get everything ready
-grade_dir = 'grading_directory';  % needed for writing and reading the files
+
+filename = 'Plate_2342.cpp'
+grade_dir = '';
+
+
+% grade_dir = 'grading_directory';  % needed for writing and reading the files
 Feedback = '';
 Score = 0; % initialize the Score at zero
 f = filename(1:end-4);   % take off .cpp
@@ -34,65 +38,47 @@ exe_file = [f,'.exe'];    % name of .exe file
 
 
 % create the dataset that will be read in by the c++ function
-% (same data as the MATLAB version)
-x = 0:0.5:2;    % x pts.
-y = 8.5*x.^2-3.466*x;       % derivative will be the same regardless how they did it
-data = [x', y'];   % two column data
+top = 0:25;
+bottom = 0:25;
+left = zeros(size(top));
+right = 25*ones(size(top));
+data = [top' bottom' left' right'];   %% 4 columns of temp data
 
-% write out the comma delimited file without a newline character at the 
+% write out the file without a newline character at the
 % end to make it easy to read in to c++
-dlmwrite_without_final_newline(fullfile(grade_dir,'FBC_data.txt'),data,[],',');
-dlmwrite_without_final_newline(fullfile(grade_dir,'Der_data.txt'),data,[],',');
+dlmwrite_without_final_newline(fullfile(grade_dir,'plate_temperatures.txt'),data,[],'\t');
 
-% solution to the differentiation (same as the MATLAB version)
-Solution = [-3.4660    5.0340   13.5340   22.0340   30.5340];
+% solution
+Solution = [];
 
 % attempt to compile the .cpp into a .exe with the same name using the
 % g++ compiler
 [compile_status, compile_OUT] = system(['g++ ', ...
-                    fullfile(grade_dir,cpp_file),' -o ', ...
-                    fullfile(grade_dir,exe_file),' -std=c++11']);
+    fullfile(grade_dir,cpp_file),' -o ', ...
+    fullfile(grade_dir,exe_file),' -std=c++11']);
 
 % compile_status will return 0 if no errors occurred
 if compile_status == 0
-    
+    Score = Score + 0.4;   % points for compiling with no errors
+    Feedback = [Feedback,' Your code compiled with no errors.'];
     % attempt to run the newly compiled .exe file
     [run_status, run_OUT] = system(['cd grading_directory && timeout 10 ./',exe_file,' && cd ..']);
-    
     % if the run didn't throw any errors
     if run_status == 0
+        Score = Score + 0.1; % points for running with no errors
+        Feedback = [Feedback,' Your code ran with no errors.'];
         % if the .exe run threw no errors the student should have produced a
-        % file named Der_XXXX.txt, 2 columns comma delimited
+        % file named Plate_XXXX.txt
         % read it in and use it as their solution
         try
-            resultFile = fullfile(grade_dir,['Der_',StudentID,'.txt']);
-            StudentResult = load(resultFile);
-            % break into x and yprime values (2 columns)
-            StudentResult_x = StudentResult(:,1);
-            StudentResult_yp = StudentResult(:,2);
+            resultFile = fullfile(grade_dir,['Plate_',StudentID,'.txt']);
+            StudentSolution = load(resultFile);   % should be a csv file
+            Score = Score + 0.2; % points for writing out a file
+            Feedback = [Feedback,' You wrote out the proper file.'];
             
-            % make it a row vector
-            StudentResult_yp = StudentResult_yp(:)';
-            
-            % GRADING SECTION------------------------------------------------------------
-            if nnz(isnan(StudentResult_yp)) == 0
-                Score = Score + 1/3;
-            else
-                Feedback = [Feedback,' Your function returned some NaNs in the result. '];
-            end
-            
-            if length(StudentResult_yp) == length(x)
-                Feedback = [Feedback,' Length of the output vector was correct. '];
-                Score = Score + 1/3;
-            else
-                Feedback = [Feedback,' Length of the output vector was not correct, it should be the same length as the input vectors. '];
-            end
-            
-            if norm(StudentResult_yp - Solution) < .01   % careful here because there are multiple correct ways to do this part
-                Feedback = [Feedback,' Your output matched the solution. '];
-                Score = Score + 1/3;
-            else
-                Feedback = [Feedback,' Your output did not match the solution. '];
+            if norm(StudentSolution - Solution) < 0.1
+                Score = Score + 0.3; % points for having the correct answer within
+                Feedback = [Feedback,' You got the right answer.'];
             end
             
             
@@ -102,26 +88,24 @@ if compile_status == 0
         end
         
     elseif run_status == 124
-        Feedback = ['Runtime Error: Your code did not complete in 10 seconds which likely indicates an infinite while loop, or some other error.'];
+        Feedback = 'Runtime Error: Your code did not complete in 10 seconds which likely indicates an infinite while loop, or some other error.';
         
     else
-            
+        
         % the run of their code didn't complete right; run_OUT should
         % contain an error description
-        Feedback = ['Runtime Error: ',regexprep(run_OUT,'[\n\r]+',' ')];
-        Score = .4;
+        Feedback = [Feedback,'  Runtime Error: ',regexprep(run_OUT,'[\n\r]+',' ')];
     end
     
 else
     %compile_OUT should contain the compile error here
-    Feedback = ['Compile Error: ',regexprep(compile_OUT,'[\n\r]+',' ')];
+    Feedback = [Feedback, '  Compile Error: ',regexprep(compile_OUT,'[\n\r]+',' ')];
 end
 
 % clean up
 try
     delete(fullfile(grade_dir,'*.exe'))  % delete all .exe files when finished with them
-    delete(fullfile(grade_dir,'FBC_data.txt')) % delete the input file just in case
-    delete(fullfile(grade_dir,'Der_data.txt')) % delete the input file just in case
+    delete(fullfile(grade_dir,'plate_temperatures.txt')) % delete the input file just in case
     delete(resultFile) % delete the generated .txt file
 catch DELERR
     disp(DELERR.message);
@@ -133,7 +117,6 @@ if length(Feedback) > 2000
 end
 
 end
-
 
 
 

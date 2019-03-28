@@ -53,13 +53,13 @@ dlmwrite_without_final_newline(fullfile(grade_dir,'Int_data.txt'),data,[],',');
 % g++ compiler
 [compile_status, compile_OUT] = system(['g++ ', ...
     fullfile(grade_dir,cpp_file),' -o ', ...
-    fullfile(grade_dir,exe_file)]);
+    fullfile(grade_dir,exe_file),' -std=c++11']);
 
 % compile_status will return 0 if no errors occurred
 if compile_status == 0
     
     % attempt to run the newly compiled .exe file
-    [run_status, run_OUT] = system(['./',exe_file]);
+    [run_status, run_OUT] = system(['cd grading_directory && timeout 10 ./',exe_file,' && cd ..']);
     
     % if the run didn't throw any errors
     if run_status == 0
@@ -67,7 +67,7 @@ if compile_status == 0
         % file named Int_XXXX.txt
         % read it in and use it as their solution
         try
-            resultFile = ['Int_',StudentID,'.txt'];
+            resultFile = fullfile(grade_dir,['Int_',StudentID,'.txt']);
             I = load(resultFile);  % should be a single scalar value
             
             
@@ -95,22 +95,30 @@ if compile_status == 0
             
         catch ERR
             % if the student didn't write out a file as instructed
-            Feedback = regexprep(ERR.message,'\n',' ');
+            Feedback = regexprep(ERR.message,'[\n\r]+','  ');
         end
         
-    else
+    elseif run_status == 124
+        Feedback = ['Runtime Error: Your code did not complete in 10 seconds which likely indicates an infinite while loop, or some other error.'];
+        
+    else 
         % the run of their code didn't complete right; run_OUT should
         % contain an error description
-        Feedback = ['Test 1 Runtime Error: ',regexprep(run_OUT,'\n',' ')];
+        Feedback = ['Test 1 Runtime Error: ',regexprep(run_OUT,'[\n\r]+',' ')];
+
         % no return (let them attempt to run again for TEST 2)
     end
     
 else
     %compile_OUT should contain the compile error here
-    Feedback = ['Compile Error: ',regexprep(compile_OUT,'\n',' ')];
+    Feedback = ['Compile Error: ',regexprep(compile_OUT,'[\n\r]+',' ')];
     % clean up
     delete(fullfile(grade_dir,'*.exe'))  % delete all .exe files when finished with them
     delete(fullfile(grade_dir,'Int_data.txt')) % delete the input file just in case
+    
+    if length(Feedback) > 2000
+        Feedback = [Feedback(1:2000),'  OUTPUT TRUNCATED'];
+    end
     return;   % don't need to do TEST 2 is compile failed
 end
 
@@ -122,14 +130,18 @@ feedback1 = Feedback;
 
 if isnan(score1)
     score1 = 0;
-    feedback1 = strcat(feedback1,"    Your code return NaN");
+    feedback1 = strcat(feedback1,'    Your code returned NaN');
 end
 
 
 
 % clean up
-delete(fullfile(grade_dir,resultFile)) % delete the generated .txt file
-delete(fullfile(grade_dir,'Int_data.txt')) % delete the input file just in case
+try
+    delete(resultFile) % delete the generated .txt file
+    delete(fullfile(grade_dir,'Int_data.txt')) % delete the input file just in case
+catch DELERR
+    disp(DELERR.message)
+end
 
 
 
@@ -155,7 +167,7 @@ dlmwrite_without_final_newline(fullfile(grade_dir,'Int_data.txt'),data,[],',');
 
 % don't need to compile again..
 % attempt to run the compiled .exe file AGAIN with new data inputs
-[run_status, run_OUT] = system(['./',exe_file]);
+[run_status, run_OUT] = system(['cd grading_directory && timeout 10 ./',exe_file,' && cd ..']);
 
 % if the run didn't throw any errors
 if run_status == 0
@@ -163,7 +175,7 @@ if run_status == 0
     % file named Int_XXXX.txt
     % read it in and use it as their solution
     try
-        resultFile = ['Int_',StudentID,'.txt'];
+        resultFile = fullfile(grade_dir,['Int_',StudentID,'.txt']);
         I = load(resultFile);  % should be a single scalar value
         
         
@@ -191,13 +203,16 @@ if run_status == 0
         
     catch ERR
         % if the student didn't write out a file as instructed
-        Feedback = regexprep(ERR.message,'\n',' ');
+        Feedback = regexprep(ERR.message,'[\n\r]+',' ');
     end
     
+elseif run_status == 124
+    Feedback = ['Runtime Error: Your code did not complete in 10 seconds which likely indicates an infinite while loop, or some other error.'];
+          
 else
     % the run of their code didn't complete right; run_OUT should
     % contain an error description
-    Feedback = ['Test 2 Runtime Error: ',regexprep(run_OUT,'\n',' ')];
+    Feedback = ['Test 2 Runtime Error: ',regexprep(run_OUT,'[\n\r]+',' ')];
 end
 
 
@@ -208,7 +223,7 @@ feedback2 = Feedback;
 
 if isnan(score2)
     score2 = 0;
-    feedback2 = strcat(feedback2,"    Your code return NaN");
+    feedback2 = strcat(feedback2,'    Your code return NaN');
 end
 
 
@@ -218,16 +233,25 @@ end
 % Note: Final score must between 0 and 1.
 
 Score = mean([score1, score2]);
-Feedback = strcat("Test 1: ",feedback1,"Test 2: ",feedback2);
+Feedback = strcat('Test 1: ',feedback1,'Test 2: ',feedback2);
 
 %========================================================================
 
 
 
 % clean up
-delete(fullfile(grade_dir,'*.exe'))  % delete all .exe files when finished with them
-delete(fullfile(grade_dir,resultFile)) % delete the generated .txt file
-delete(fullfile(grade_dir,'Int_data.txt')) % delete the input file just in case
+try
+    delete(fullfile(grade_dir,'*.exe'))  % delete all .exe files when finished with them
+    delete(fullfile(grade_dir,'Int_data.txt')) % delete the input file just in case
+    delete(resultFile)  % delete the generated .txt file
+catch DELERR
+    disp(DELERR.message)
+end
+
+
+if length(Feedback) > 2000
+    Feedback = [Feedback(1:2000),'  OUTPUT TRUNCATED'];
+end
 
 
 end
