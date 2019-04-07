@@ -23,12 +23,7 @@ function [Score, Feedback] = Plate_Grader(filename)
 %
 %--------------------------------------------------------------
 % Get everything ready
-
-filename = 'Plate_2342.cpp'
-grade_dir = '';
-
-
-% grade_dir = 'grading_directory';  % needed for writing and reading the files
+grade_dir = 'grading_directory';  % needed for writing and reading the files
 Feedback = '';
 Score = 0; % initialize the Score at zero
 f = filename(1:end-4);   % take off .cpp
@@ -38,18 +33,20 @@ exe_file = [f,'.exe'];    % name of .exe file
 
 
 % create the dataset that will be read in by the c++ function
-top = 0:25;
-bottom = 0:25;
-left = zeros(size(top));
-right = 25*ones(size(top));
+top = linspace(-sqrt(30),sqrt(30),32).^2;
+bottom = linspace(-sqrt(30),sqrt(30),32).^2;
+left = linspace(-sqrt(30),sqrt(30),32).^2;
+right = linspace(-sqrt(30),sqrt(30),32).^2;
 data = [top' bottom' left' right'];   %% 4 columns of temp data
 
 % write out the file without a newline character at the
 % end to make it easy to read in to c++
 dlmwrite_without_final_newline(fullfile(grade_dir,'plate_temperatures.txt'),data,[],'\t');
+% be nice and write out another one with upper case name
+dlmwrite_without_final_newline(fullfile(grade_dir,'Plate_temperatures.txt'),data,[],'\t');
 
 % solution
-Solution = [];
+Solution = load('Plate_Problem_Solution.txt');
 
 % attempt to compile the .cpp into a .exe with the same name using the
 % g++ compiler
@@ -75,12 +72,20 @@ if compile_status == 0
             StudentSolution = load(resultFile);   % should be a csv file
             Score = Score + 0.2; % points for writing out a file
             Feedback = [Feedback,' You wrote out the proper file.'];
-            
-            if norm(StudentSolution - Solution) < 0.1
-                Score = Score + 0.3; % points for having the correct answer within
-                Feedback = [Feedback,' You got the right answer.'];
+            if size(StudentSolution) == size(Solution)
+                
+                normdiff = norm(StudentSolution - Solution);
+                if normdiff < 18
+                    Score = Score + 0.3; % points for having the correct answer within
+                    Feedback = [Feedback,' You got the right answer.'];
+                else
+                    Feedback = [Feedback,' Your answer was off. norm(Yours-Mine) = ',num2str(normdiff)];
+                end     
+            else
+                Feedback = [Feedback,' The size of your output matrix was ',num2str(size(StudentSolution)), ...
+                    ' but it should have been ',num2str(size(Solution))];
             end
-            
+                    
             
         catch ERR
             % if the student didn't write out a file as instructed
@@ -108,7 +113,7 @@ try
     delete(fullfile(grade_dir,'plate_temperatures.txt')) % delete the input file just in case
     delete(resultFile) % delete the generated .txt file
 catch DELERR
-    disp(DELERR.message);
+%     disp(DELERR.message);
 end
 
 

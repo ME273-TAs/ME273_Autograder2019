@@ -23,10 +23,7 @@ function [Score, Feedback] = Art_Grader(filename)
 %
 %--------------------------------------------------------------
 % Get everything ready
-filename = 'Art_1234.cpp';
-grade_dir = '';
-
-% grade_dir = 'grading_directory';  % needed for writing and reading the files
+grade_dir = 'grading_directory';  % needed for writing and reading the files
 Feedback = '';
 Score = 0; % initialize the Score at zero
 f = filename(1:end-4);   % take off .cpp
@@ -39,20 +36,36 @@ exe_file = [f,'.exe'];    % name of .exe file
 rgbimage = imread('GradeImage.jpg');
 grayimage = rgb2gray(rgbimage);
 smaller = imresize(grayimage,0.25);
-data = 255 - smaller;   %% coefficients of the polynomial (one column)
-imshow(smaller)
+data = 255 - smaller;  
 
 % write out the file without a newline character at the
 % end to make it easy to read in to c++
-dlmwrite_without_final_newline(fullfile(grade_dir,'Input.txt'),data,[],' ');
+inputFileName = fullfile(grade_dir,'Input.txt');
+dlmwrite_without_final_newline(inputFileName,data,[],' ');
+% append the size of the matrix to the top of the data file
+S = fileread(inputFileName);
+S = [num2str(size(data,1)),' ',num2str(size(data,2)),char(10),S];
+FID = fopen(inputFileName, 'w');
+fwrite(FID, S, 'char');
+fclose(FID);
+
+% be nice and write another one with lower case name
+inputFileName = fullfile(grade_dir,'input.txt');
+dlmwrite_without_final_newline(inputFileName,data,[],' ');
+% append the size of the matrix to the top of the data file
+S = fileread(inputFileName);
+S = [num2str(size(data,1)),' ',num2str(size(data,2)),char(10),S];
+FID = fopen(inputFileName, 'w');
+fwrite(FID, S, 'char');
+fclose(FID);
 
 
 % write out the ascii mapping file as well just to be safe
 asciimap = load('ASCII_mapping.txt');
 dlmwrite_without_final_newline(fullfile(grade_dir,'ASCII_mapping.txt'),asciimap,[],'\t');
 
-%; solution 
-Solution = []
+% to going to actually check the solution in this case
+% Solution = []
 
 % attempt to compile the .cpp into a .exe with the same name using the
 % g++ compiler
@@ -62,39 +75,26 @@ Solution = []
 
 % compile_status will return 0 if no errors occurred
 if compile_status == 0
-    Score = Score + 0.4;   % points for compiling with no errors
+    Score = Score + 0.5;   % points for compiling with no errors
     Feedback = [Feedback,' Your code compiled with no errors.'];
     % attempt to run the newly compiled .exe file
     [run_status, run_OUT] = system(['cd grading_directory && timeout 10 ./',exe_file,' && cd ..']);
     % if the run didn't throw any errors
     if run_status == 0
-        Score = Score + 0.1; % points for running with no errors
+        Score = Score + 0.3; % points for running with no errors
         Feedback = [Feedback,' Your code ran with no errors.'];
         % if the .exe run threw no errors the student should have produced a
-        % file named Results_XXXX.txt
+        % file named ASCII_XXXX.txt
         % read it in and use it as their solution
         try
-            resultFile = fullfile(grade_dir,['Results_',StudentID,'.txt']);
-            [content,answerLine] = readFileIntoCell(resultFile);
-            Score = Score + 0.2; % points for writing out a file
-            Feedback = [Feedback,' You wrote out the proper file.'];
-            if isempty(answerLine)
-                % if we couldn't find the final answer in the file, show it
-                % to the user and let them grade it manually
-                disp(fileread(resultFile))
-                human = input('Enter a 1 if the final answer on the screen looks correct, 0 otherwise.\n');
-                Score = Score + human*0.2; % points for having the correct answer within
+            resultFile = fullfile(grade_dir,['ASCII_',StudentID,'.txt']);
+            content = readFileIntoCell(resultFile);
+            if length(content) == size(data,1) && ~isempty(content{23})
+                Score = Score + 0.2; % points for writing out a file with stuff in it
+                Feedback = [Feedback,' You wrote out the proper file.'];  
             else
-                indexs = regexp(content{answerLine},'\d');  % all of the indexs in the string that are numeric digits
-                StudentSolution = str2double(content{answerLine}(indexs(1):end));  % starting from the first digit, convert the rest of the line to a double
-                
-                if abs(StudentSolution - Solution) < 0.1
-                    Score = Score + 0.3; % points for having the correct answer within
-                    Feedback = [Feedback,' You got the right answer.'];
-                end
+                Feedback = [Feedback,' The file you wrote out didn''t have the expected size or was empty'];
             end
-             
-            
         catch ERR
             % if the student didn't write out a file as instructed
             Feedback = regexprep(ERR.message,'[\n\r]+',' ');
@@ -118,10 +118,10 @@ end
 % clean up
 try
     delete(fullfile(grade_dir,'*.exe'))  % delete all .exe files when finished with them
-    delete(fullfile(grade_dir,'poly.txt')) % delete the input file just in case
+    delete(fullfile(grade_dir,'Input.txt')) % delete the input file just in case
     delete(resultFile) % delete the generated .txt file
 catch DELERR
-    disp(DELERR.message);
+%     disp(DELERR.message);
 end
 
 
@@ -133,11 +133,11 @@ end
 
 
 
-function [content, answerLine] = readFileIntoCell(filename)
+function content = readFileIntoCell(filename)
 f = fopen(filename);        % open the file
 test = 1;                   % initialize the test variable
 i = 1;                      % initialize i: the variable for which row of the file is being examined
-answerLine = [];            % where the answer is located in the file
+content = {};      
 while test == 1             % loop through the lines of the file
     
     tline = fgetl(f);       % get a line of text
@@ -146,9 +146,6 @@ while test == 1             % loop through the lines of the file
     elseif isempty(tline)   % loop around if the line contains nothing
         continue
     else
-        if myContains(tline,'FINAL',1) && myContains(tline,'ESTIMATE',1)  % if the answer is found
-            answerLine = i;
-        end
         content{i,1} = strtrim(tline);  % trim out inital and ending space characters
     end
     
@@ -156,32 +153,6 @@ while test == 1             % loop through the lines of the file
 end
 end
 
-
-function [result] = myContains(bigString, phrase, ignorecase)
-result = 0;
-if ignorecase
-    phrase = upper(phrase);
-    bigString = upper(bigString);
-    
-    for i = 1:length(bigString)-length(phrase)+1
-        if strcmp(phrase,bigString(i:i+length(phrase)-1))
-            result = 1;
-            return
-        end
-    end
-else
-    
-    for i = 1:length(bigString)-length(phrase)+1
-        if strcmp(phrase,bigString(i:i+length(phrase)-1))
-            result = 1;
-            return
-        end
-    end
-end
-
-
-
-end
 
 
 

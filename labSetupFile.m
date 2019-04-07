@@ -39,7 +39,6 @@ function L = labSetupFile
 % VERSION HISTORY TRACKED WITH GIT
 %
 %==============================================END-HEADER======
-
 % Create labs list object
 L = LabsList();
 
@@ -75,9 +74,10 @@ L.addLabPart('Secant',fullfile('Lab 05','Secant_Grader.m'));
 L.addLabPart('FP',fullfile('Lab 05','FP_Grader.m'));            % ditto
 L.addLabPart('Bisect',fullfile('Lab 05','Bisect_Grader.m'));    % ditto
 
-
-% Skip Lab 6 (Root finding race)
-
+% Lab 6
+L.addLab(6,datetime(2019,2,11,16,0,0),'MATLAB');        % look up the due date again 
+L.addLabPart('Speedy',fullfile('Lab 06','Speedy_Grader.m'));    % ditto
+L.addLabPart('SpeedyV',fullfile('Lab 06','SpeedyV_Grader.m'));     
 
 % Lab 7
 L.addLab(7,datetime(2019,2,25,16,0,0),'MATLAB');        % the integer value is a unique integer identifier - could be negative or strange numbers for test labs
@@ -87,13 +87,12 @@ L.addLabPart('RK4',fullfile('Lab 07','RK4_Grader.m'));    % ditto
 L.addLabPart('ODEcharts',fullfile('Lab 07','ODEcharts_Grader.m'));    % ditto
 L.addLabPart('ErrPlots',fullfile('Lab 07','ErrPlots_Grader.m'));    % ditto
 
-
+% Lab 8 was just a pass off: 'Welcome to C++'
 
 % Lab 9
 L.addLab(9,datetime(2019,3,18,16,0,0),'C++');        % the integer value is used as a unique integer identifier 
 L.addLabPart('FBC_Deriv',fullfile('Lab 09','FBC_Deriv_Grader.m'));     
 L.addLabPart('AdaptiveInt',fullfile('Lab 09','AdaptiveInt_Grader.m'));            % ditto
-
 
 % Lab 10
 L.addLab(10,datetime(2019,3,25,16,0,0),'C++');        % the integer value is used as a unique integer identifier 
@@ -101,11 +100,13 @@ L.addLabPart('Secant',fullfile('Lab 10','Secant_Grader.m'));
 L.addLabPart('FP',fullfile('Lab 10','FP_Grader.m'));            % ditto
 L.addLabPart('Bisect',fullfile('Lab 10','Bisect_Grader.m')); 
 
-
-
 % Lab 11
-L.addLab(11,datetime(2019,3,31,16,0,0),'C++');        % the integer value is used as a unique integer identifier 
+L.addLab(11,datetime(2019,4,1,16,0,0),'C++');        % the integer value is used as a unique integer identifier 
 L.addLabPart('Art',fullfile('Lab 11','Art_Grader.m'));     
 L.addLabPart('Plate',fullfile('Lab 11','Plate_Grader.m'));            % ditto
 
+% Lab 12
+L.addLab(12,datetime(2019,4,8,16,0,0),'MATLAB');        % the integer value is used as a unique integer identifier 
+L.addLabPart('ImageRecon',fullfile('Lab 12','ImageRecon_Grader.m'));     
+L.addLabPart('SolTimes',fullfile('Lab 12','SolTimes_Grader.m'));            % ditto
 
