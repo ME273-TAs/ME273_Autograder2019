@@ -16,7 +16,7 @@ function [labPath, archivesPath, gradesTable] = ...
 %
 % OUTPUTS:
 %   labPath - path to all graded lab files.
-%   
+%
 %   archivesPath - path to archived (static) lab files.
 %
 %   gradesTable - table structure with the most recent grades read for this
@@ -25,7 +25,7 @@ function [labPath, archivesPath, gradesTable] = ...
 %
 %
 % NOTES:
-%   
+%
 %
 %
 % VERSION HISTORY TRACKED WITH GIT
@@ -40,8 +40,20 @@ archivesPath = fullfile('..','GradedLabs',labFolder,'Archives');
 if ~exist(archivesPath,'dir')
     mkdir(archivesPath); % make lab path
     gradesTable = 'none'; % list recent file as none
+    
+    % % if we are running a C++ lab on the Linux machine, the default read-write
+    % % permissions are weird.
+    % if strcmp(currentLab.language,'C++') and ~ispc()
+    %     % [STATUS,MESSAGE,MESSAGEID] = fileattrib(FILE,ATTRIBS,USERS,'s')
+    %     [STATUS,MESSAGE,MESSAGEID] = fileattrib(archivesPath,'+w','g','s');
+    %     [STATUS,MESSAGE,MESSAGEID] = fileattrib(archivesPath,'+w','g','s');
+    % elseif strcmp(currentLab.language,'C++')
+    %     error('you should be running this lab on a linux machine...')
+    % end
     return; % exit function
 end
+
+
 
 % Get a list of .csv files in Archives
 static_csvs = dir(fullfile(archivesPath,'*.csv'));
@@ -80,10 +92,10 @@ elseif ~isempty(dynamic_csv) % if there is a dynamic file
         logManualChanges(configVars, gradesTable, mostRecentStatic);
     end
     
-%     % archive a copy of the dynamic csv converted to static
-%     filename = ['Lab',num2str(labNum),'Graded',datestr(now, ...
-%         '(yyyy-mm-dd HH-MM-SS)'),'.csv'];
-%     writetable(dynamicTable,fullfile(archivesPath, filename));
+    %     % archive a copy of the dynamic csv converted to static
+    %     filename = ['Lab',num2str(labNum),'Graded',datestr(now, ...
+    %         '(yyyy-mm-dd HH-MM-SS)'),'.csv'];
+    %     writetable(dynamicTable,fullfile(archivesPath, filename));
     
 elseif isempty(dynamic_csv) && ~isempty(static_csvs)
     
@@ -99,15 +111,15 @@ end % end of function
 % Helper function - Get the most recent file
 function recentFile = getMostRecentStatic(files)
 
-    % Find the most recent file
-    recentFile = files(1); % assume it's the first one
+% Find the most recent file
+recentFile = files(1); % assume it's the first one
 
-    if length(files) > 1 % if the list is greater than one
-        for i = 2:length(files) % compare dates between current assumed file and the next
-            if datetime(files(i).date) > datetime(recentFile.date) 
-                recentFile = files(i); % choose the newest one
-            end
+if length(files) > 1 % if the list is greater than one
+    for i = 2:length(files) % compare dates between current assumed file and the next
+        if datetime(files(i).date) > datetime(recentFile.date)
+            recentFile = files(i); % choose the newest one
         end
     end
-    
+end
+
 end

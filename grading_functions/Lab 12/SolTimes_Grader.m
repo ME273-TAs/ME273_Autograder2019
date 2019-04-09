@@ -42,6 +42,7 @@ try
     
     %================================================================================
     % Running student code
+    close all
     CallingString = ['[StudentTimes] = ',StudentFunction,'(MSizes, Methods);'];        % A string passed to eval.
     eval(CallingString)                                         % evaluate the function
     %================================================================================
@@ -86,16 +87,20 @@ try
             Score = Score + LegContentPoints;
             % rref should always be slower than linsolve for these matrix
             % sizes
-            if strfind(Strings,'rref') < strfind(Strings,'linsolve')
+            if strfind(upper(Strings),upper('rref')) < strfind(upper(Strings),upper('linsolve'))
                 Score = Score + LegSortedPoints;
             else
                 Feedback = [Feedback,' Incorrect ordering of legend entries.'];
             end
             
         else
-            human = input('The grader thinks this student does not have the correct legend entries, if they have something\nthat indicates rref and linsolve ONLY (in that order), enter 1, otherwise enter 0\n');
-            Score = Score + human*(LegContentPoints + LegSortedPoints);
-            if human == 0
+            message = ['The grader thinks this student does NOT have the correct legend entries; ',...
+                'if they have something that indicates rref and linsolve ONLY (in that order), ',...
+                'enter YES, otherwise enter NO'];
+            answer = questdlg(message,'Human Grading Question','Yes','No','No');
+            if strcmp(answer,'Yes')
+                Score = Score + (LegContentPoints + LegSortedPoints);
+            else
                 Feedback = [Feedback,' Missing or incorrect legend entries.'];
             end
         end
@@ -128,7 +133,7 @@ try
         Feedback = [Feedback,' The returned times matrix was not the appropiate ',...
             'size. It should always have 4 columns regardless of what Methods were activated'];
     end
-    close(gcf)
+    
     
     
     %====================================================================================
@@ -157,6 +162,6 @@ catch ERROR
     %==============================================================
     
 end
-
+close(gcf)
 
 end

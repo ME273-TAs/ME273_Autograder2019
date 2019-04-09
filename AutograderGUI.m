@@ -287,9 +287,9 @@ classdef AutograderGUI < handle
             % show finished message
             uiwait(msgbox(['Lab ',num2str(labNum),' grading complete!'],...
                 'Grading Complete','help','modal'));
-            self.settingsGUI.grade.String = 'Grade';
-            self.settingsGUI.grade.Enable = 'on';
-            self.settingsGUI.grade.BackgroundColor = 'white';
+%             self.settingsGUI.grade.String = 'Grade';
+%             self.settingsGUI.grade.Enable = 'on';
+%             self.settingsGUI.grade.BackgroundColor = 'white';
 
         end % end function gradeLab
         

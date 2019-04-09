@@ -118,6 +118,17 @@ outFile = staticToDynamic(master, configVars);
 dynamicFilename = ['Lab',num2str(labNum),'Graded_Current.csv'];
 writetable(outFile,fullfile(labPath,dynamicFilename));
 
+
+% % if we are running a C++ lab on the Linux machine, the default read-write
+% % permissions are weird.
+% if strcmp(currentLab.language,'C++') and ~ispc()
+%     % [STATUS,MESSAGE,MESSAGEID] = fileattrib(FILE,ATTRIBS,USERS,'s')
+%     [STATUS,MESSAGE,MESSAGEID] = fileattrib(staticFilename,'+w','g','s');  
+%     [STATUS,MESSAGE,MESSAGEID] = fileattrib(dynamicFilename,'+w','g','s');
+% elseif strcmp(currentLab.language,'C++')
+%     error('you should be running this lab on a linux machine...')
+% end
+
 end % end of function
 
 

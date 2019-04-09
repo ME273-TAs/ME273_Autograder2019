@@ -75,7 +75,7 @@ L.addLabPart('FP',fullfile('Lab 05','FP_Grader.m'));            % ditto
 L.addLabPart('Bisect',fullfile('Lab 05','Bisect_Grader.m'));    % ditto
 
 % Lab 6
-L.addLab(6,datetime(2019,2,11,16,0,0),'MATLAB');        % look up the due date again 
+L.addLab(6,datetime(2019,2,19,16,0,0),'MATLAB');        % 
 L.addLabPart('Speedy',fullfile('Lab 06','Speedy_Grader.m'));    % ditto
 L.addLabPart('SpeedyV',fullfile('Lab 06','SpeedyV_Grader.m'));     
 

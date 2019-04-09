@@ -29,7 +29,7 @@ try
     %=================================================|
     StudentFunction = filename(1:end-2);   % get function name     |
     filetext = fileread(filename);         % get the function as a string to check for text inside
-    load('system7.mat')                    % load up the encrypted image
+    load('system8.mat')                    % load up the encrypted image
     
     %=================================================|
     
@@ -138,7 +138,6 @@ catch ERROR
     %%==============================================================
     
 end
-
 
 
 end
