@@ -1,0 +1,5 @@
+#don't track the student roster
+roster.csv
+
+# no need to track the grading_directory/
+grading_directory/
