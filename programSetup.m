@@ -80,8 +80,16 @@ end
 %% Checkpoint
 
 % Write out grades to appropriate folder location
-answer = questdlg('Do you want to accept this grading effort?','Checkpoint',...
-    'Yes','No','No');
+% place a small icon on the dialog box that shows the current distibution
+% (histogram) of the grades, buttondlg function comes from the file
+% exchange:
+% https://www.mathworks.com/matlabcentral/fileexchange/46401-specifying-icon-in-questdlg
+S.Default = 'Yes'; 
+S.IconString = 'custom'; 
+S.IconData  = getHistogramFigure(master, currentLab.num);
+answer = buttondlg('Do you want to accept this grading effort?','Checkpoint','Yes','No',S);
+% answer = questdlg('Do you want to accept this grading effort?','Checkpoint',...
+%     'Yes','No','No');
 
 % Exit the program if not desired to save the grades
 if strcmp(answer,'No')
