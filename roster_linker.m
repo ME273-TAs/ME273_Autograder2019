@@ -1,5 +1,5 @@
-function linkedTable = roster_linker(submissionsTable, roster, ...
-    partName, configVars, regrading, manualGrading, dueDate, pseudoDate, varargin)
+function linkedTable = roster_linker(currentLab, submissionsTable, roster, ...
+    partName, configVars, regrading, manualGrading, pseudoDate, varargin)
 
 %============================================BEGIN-HEADER=====
 % FILE: roster_linker.m
@@ -49,7 +49,6 @@ function linkedTable = roster_linker(submissionsTable, roster, ...
 % VERSION HISTORY TRACKED WITH GIT
 %
 %==============================================END-HEADER======
-
 % Initialize variables for first time grading
 firstTimeGrading = 1;
 prevGraded = 'none';
@@ -113,10 +112,6 @@ for i = 1:m
     % submission
     rosterTable.PartName{i} = partName;
     
-    if rosterTable.CourseID(i) == 1077 || rosterTable.CourseID(i) == 3221
-        'bad'
-    end
-    
     % Get or assign student submission deadlines
     
     match = 0; % matching student flag
@@ -150,7 +145,7 @@ for i = 1:m
     elseif firstTimeGrading || ~match
         % create deadlines based on student section number
         [rosterTable.FirstDeadline{i}, rosterTable.FinalDeadline{i}] = ...
-            getSectionDueDates(rosterTable.SectionNumber(i), dueDate, configVars);
+            getSectionDueDates(rosterTable.SectionNumber(i), currentLab.dueDate, configVars);
     end
     
     % Choose which deadline to use as current
@@ -182,7 +177,7 @@ for i = 1:m
                     
                     % rename file and assign to student
                     rosterTable.File{i} = rename_file(...
-                        submissionsTable(j), partName);
+                        submissionsTable(j), partName, currentLab.language);
                     rosterTable.GoogleTag{i} = getGoogleTag(...
                         submissionsTable(j).name);
                 end

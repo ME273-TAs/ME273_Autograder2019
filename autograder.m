@@ -1,4 +1,4 @@
-function master = autograder(labNum, dueDate, roster, configVars, labParts,...
+function master = autograder(currentLab, roster, configVars, labParts,...
     regrading, manualGrading, pseudoDate, varargin)
 %============================================BEGIN-HEADER=====
 % FILE: autograder.m
@@ -42,7 +42,7 @@ function master = autograder(labNum, dueDate, roster, configVars, labParts,...
 % Deal with variable inputs
 firstGrading = 1;
 
-NORM_IN = 8; % specify number of non-variable inputs
+NORM_IN = 7; % specify number of non-variable inputs
 
 if regrading && nargin == NORM_IN
     error('Cannot run in regrading mode without a previously graded lab file specified.');
@@ -65,19 +65,19 @@ for i = 1:length(labParts)
     if firstGrading
         
         % Link the students to the submissions
-        linked = roster_linker(submissions, roster, labParts{i}.name, ...
-        configVars, regrading, manualGrading, dueDate, pseudoDate);
+        linked = roster_linker(currentLab, submissions, roster, labParts{i}.name, ...
+        configVars, regrading, manualGrading, pseudoDate);
        
     else
         
         % Link the students to the submissions
-        linked = roster_linker(submissions, roster, labParts{i}.name, ...
-        configVars, regrading, manualGrading, dueDate, pseudoDate, varargin{1});
+        linked = roster_linker(currentLab, submissions, roster, labParts{i}.name, ...
+        configVars, regrading, manualGrading, pseudoDate, varargin{1});
         
     end
     
     % do lab part grading
-    graded = lab_part_grader(linked, labParts{i}.graderfile, configVars,...
+    graded = lab_part_grader(currentLab, linked, labParts{i}.graderfile, configVars,...
         regrading, manualGrading, pseudoDate);
     
     partTables{i} = graded; % store graded lab
@@ -85,6 +85,6 @@ for i = 1:length(labParts)
 end
 
 % compile all lab grades into one
-master = lab_grader(labNum,partTables,configVars);
+master = lab_grader(currentLab.num,partTables,configVars);
 
 end % end of function

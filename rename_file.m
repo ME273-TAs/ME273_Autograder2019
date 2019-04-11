@@ -1,4 +1,4 @@
-function outFile = rename_file(fileIn, assignmentName)
+function outFile = rename_file(fileIn, assignmentName, language)
 
 %============================================BEGIN-HEADER=====
 % FILE: rename_file.m
@@ -7,6 +7,7 @@ function outFile = rename_file(fileIn, assignmentName)
 %
 % PURPOSE: Rename a single file. 
 %   Ex: Euler_9991 - Caleb Groves.m -> Euler_9991.m
+%   OR  Euler_9991 - Jared Oliphant.cpp -> Euler_9991.cpp    
 %   
 %
 % INPUTS:
@@ -26,13 +27,20 @@ function outFile = rename_file(fileIn, assignmentName)
 %
 %==============================================END-HEADER======
 
+grade_dir = 'grading_directory'; % name of grading directory folder
+
 % construct new filename
 studentID = num2str(parseCourseID(fileIn.name));
-newName = strcat(assignmentName,'_',studentID,'.m');
 
-movefile(fullfile(fileIn.folder,fileIn.name),fullfile(fileIn.folder,newName));
+if strcmp(language,'MATLAB')
+    newName = strcat(assignmentName,'_',studentID,'.m');
+elseif strcmp(language,'C++')
+    newName = strcat(assignmentName,'_',studentID,'.cpp');
+end
 
-outFile = dir(fullfile(fileIn.folder,newName));
+
+movefile(fullfile(grade_dir,fileIn.name),fullfile(grade_dir,newName))
+outFile = dir(fullfile(grade_dir,newName));
 
 
 end

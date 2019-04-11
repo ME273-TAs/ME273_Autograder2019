@@ -134,7 +134,7 @@ classdef AutograderGUI < handle
         function updatePartMger(self,hObject,~)
             % get the selected lab number
             idx = hObject.Value;
-            labNum = str2num(hObject.String(idx));
+            labNum = str2num(hObject.String(idx,:));
             
             % get that lab from the labs list
             self.currentLab = self.labsList.getLab(labNum);
@@ -282,8 +282,7 @@ classdef AutograderGUI < handle
             end
             
             % Call programSetup            
-            programSetup(labNum, dueDate, roster, labParts, regrade, ...
-                manual, pseudoDate);
+            programSetup(self.currentLab, labParts, roster, regrade, manual, pseudoDate);
             
             % show finished message
             uiwait(msgbox(['Lab ',num2str(labNum),' grading complete!'],...

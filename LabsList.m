@@ -23,9 +23,9 @@ classdef LabsList < handle
         end % end constructor
         
         % Function for adding a lab to the end of the list
-        function addLab(self, num, dueDate)
+        function addLab(self, num, dueDate, language)
             self.numLabs = self.numLabs + 1; % increment counter
-            self.labs{end+1} = Lab(num, dueDate); % add on lab to cell array
+            self.labs{end+1} = Lab(num, dueDate, language); % add on lab to cell array
         end % end function addLab
         
         % This function adds a lab part to the last-added lab in the list.
