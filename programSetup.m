@@ -99,6 +99,13 @@ end
 %% File Writing
 LSmaster = LSprep(master, configVars);  % convert the final master array to an array that has score 
                                         % out of 25 points so it will play nice with learning suite
+                                        
+% Replace Ungraded 0's with NaN's to prevent LS deceptions
+for i = 1:height(LSmaster)
+    if LSmaster{i,7} == 0
+        LSmaster{i,6} = nan;
+    end
+end
 
 % Write out static .csv in top level for uploads
 uploadFile = fullfile(labPath,'ME273LabFeedback.csv');
