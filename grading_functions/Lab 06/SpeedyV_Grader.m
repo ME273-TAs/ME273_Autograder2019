@@ -25,7 +25,6 @@ function [Score, Feedback] = SpeedyV_Grader(filename)
 %--------------------------------------------------------------
 
 
-
 % load the data for Speedy
 speedyVData = load('SpeedyV_Grades.mat')
 
@@ -53,7 +52,5 @@ if isnan(Score)
 else
     Feedback = "Your score was based on accuracy and time as stated in the Lab handout";
 end
-
-
 
 end

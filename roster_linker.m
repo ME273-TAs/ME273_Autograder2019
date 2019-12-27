@@ -48,6 +48,10 @@ function linkedTable = roster_linker(currentLab, submissionsTable, roster, ...
 %
 % VERSION HISTORY TRACKED WITH GIT
 %
+% 10/31/2019 - Fixed an issue where changing the dynamic graded file could
+%   affect the year of the due date. Added logic to catch this and change
+%   the due date year to the current year. -Jared Hale
+%
 %==============================================END-HEADER======
 % Initialize variables for first time grading
 firstTimeGrading = 1;
@@ -123,8 +127,14 @@ for i = 1:m
             if rosterTable.CourseID(i) == prevGraded.CourseID{j}
                 % set match flag
                 match = 1;
-                
-                % copy over old student information
+                % When some changes are made to graded csv occasionally the
+                % year will shift to 2000 years ago. This checks to make
+                % sure the dates here are within the last two millenia
+                if prevGraded.FirstDeadline{j}.Year < 2010
+                    prevGraded.FirstDeadline{j}.Year = datetime('now').Year;
+                    prevGraded.FinalDeadline{j}.Year = datetime('now').Year;
+                end
+                % copy over old student information 
                 rosterTable.FirstDeadline{i} = ...
                     datetime(prevGraded.FirstDeadline{j});
                 rosterTable.FinalDeadline{i} = ...

@@ -4,7 +4,7 @@ function ButtonName=buttondlg(Question,Title,Btn1,Btn2,Btn3,Default)
 % ******** Modified function help *****************************************
 % *************************************************************************
 % buttondlg is a simple modification of MATLABs function QUESTDLG which
-% enables the user to change the icon in the dialog box, known from the 
+% enables the user to change the icon in the dialog box, known from the
 % MATLAB function MSGBOX. Available icons are the same known from MSGBOX
 % ('none','warn','error','help','custom'), but also 'quest' (known from the
 % original questdlg) and 'bulb'. If you choose 'custom', you also have to
@@ -128,14 +128,14 @@ if nargin == 1
     Title = ' ';
 end
 if nargin <= 2,
-    Default = 'Yes'; 
+    Default = 'Yes';
     needsLookup = true;
 end
 if nargin == 3,
     Default = Btn1;
 end
 if nargin <= 3,
-    Btn1 = 'Yes'; 
+    Btn1 = 'Yes';
     Btn2 = 'No';
     Btn3 = 'Cancel';
     NumButtons = 3;
@@ -324,7 +324,7 @@ for i = 1:NumButtons
         'Tag'                ,ButtonTag     ...
         );
     
-    setappdata(BtnHandle{i},'QuestDlgReturnName',ButtonString);   
+    setappdata(BtnHandle{i},'QuestDlgReturnName',ButtonString);
 end
 if ~DefaultValid
     warnstate = warning('backtrace','off');
@@ -434,7 +434,7 @@ if ~strcmp(IconString,'none')                               % <-- Added
                 a.questIconMap(256,:)=get(QuestFig,'Color');
                 IconCMap=a.questIconMap;
                 
-             case 'bulb'
+            case 'bulb'
                 IconData=a.lightbulbIconData;
                 a.lightbulbIconMap(6,:)=get(QuestFig,'Color');
                 IconCMap=a.lightbulbIconMap;
@@ -486,115 +486,118 @@ else
     ButtonName='';
 end
     function doFigureKeyPress(obj, evd)  %#ok
-    switch(evd.Key)
-        case {'return','space'}
-            if DefaultValid
-                DefaultWasPressed = true;
-                uiresume(gcbf);
-            end
-        case 'escape'
-            doDelete
-    end
+        switch(evd.Key)
+            case {'return','space'}
+                if DefaultValid
+                    DefaultWasPressed = true;
+                    uiresume(gcbf);
+                end
+            case 'escape'
+                doDelete
+        end
     end
     function doControlKeyPress(obj, evd)  %#ok
-    switch(evd.Key)
-        case {'return'}
-            if DefaultValid
-                DefaultWasPressed = true;
-                uiresume(gcbf);
-            end
-        case 'escape'
-            doDelete
-    end
+        switch(evd.Key)
+            case {'return'}
+                if DefaultValid
+                    DefaultWasPressed = true;
+                    uiresume(gcbf);
+                end
+            case 'escape'
+                doDelete
+        end
     end
     function doDelete(varargin)
-    delete(QuestFig);
+        delete(QuestFig);
     end
-    % all functions beginning here are not changed, but needs to be
-    % importet, no idea why
+% all functions beginning here are not changed, but needs to be
+% importet, no idea why
     function outStr = dialogCellstrHelper (inputStr)
-    %   Copyright 2010-2011 The MathWorks, Inc.
-    % Helper used by MSGBOX, ERRORDLG, WARNDLG, QUESTDLG to parse the input
-    % string vector, matrix or cell array or strings.
-    % This works similar to the CELLSTR function but does not use deblank, like
-    % cellstr, to eliminate any trailing white spaces.
-    % Validate input string type. 
-    validateattributes(inputStr, {'char','cell'}, {'2d'},mfilename);
-    % Convert to cell array of strings without eliminating any user input. 
-    if ~iscell(inputStr)
-        inputCell = {};
-        for siz = 1:size(inputStr,1)
-            inputCell{siz} =inputStr(siz,:); %#ok<AGROW>
+        %   Copyright 2010-2011 The MathWorks, Inc.
+        % Helper used by MSGBOX, ERRORDLG, WARNDLG, QUESTDLG to parse the input
+        % string vector, matrix or cell array or strings.
+        % This works similar to the CELLSTR function but does not use deblank, like
+        % cellstr, to eliminate any trailing white spaces.
+        % Validate input string type.
+        validateattributes(inputStr, {'char','cell'}, {'2d'},mfilename);
+        % Convert to cell array of strings without eliminating any user input.
+        if ~iscell(inputStr)
+            inputCell = {};
+            for siz = 1:size(inputStr,1)
+                inputCell{siz} =inputStr(siz,:); %#ok<AGROW>
+            end
+            outStr = inputCell;
+        else
+            outStr = inputStr;
         end
-        outStr = inputCell;
-    else
-        outStr = inputStr;
-    end
     end % end function dialogCellstrHelpber
     function figure_size = getnicedialoglocation(figure_size, figure_units)
-    % adjust the specified figure position to fig nicely over GCBF
-    % or into the upper 3rd of the screen
-    %  Copyright 1999-2010 The MathWorks, Inc.
-    %  $Revision: 1.1.6.5 $
-    parentHandle = gcbf;
-    convertData.destinationUnits = figure_units;
-    if ~isempty(parentHandle)
-        % If there is a parent figure
-        convertData.hFig = parentHandle;
-        convertData.size = get(parentHandle,'Position');
-        convertData.sourceUnits = get(parentHandle,'Units');  
-        c = []; 
-    else
-        % If there is no parent figure, use the root's data
-        % and create a invisible figure as parent
-        convertData.hFig = figure('visible','off');
-        convertData.size = get(0,'ScreenSize');
-        convertData.sourceUnits = get(0,'Units');
-        c = onCleanup(@() close(convertData.hFig));
-    end
-    % Get the size of the dialog parent in the dialog units
-    container_size = hgconvertunits(convertData.hFig, convertData.size ,...
-        convertData.sourceUnits, convertData.destinationUnits, get(convertData.hFig,'Parent'));
-    delete(c);
-    figure_size(1) = container_size(1)  + 1/2*(container_size(3) - figure_size(3));
-    figure_size(2) = container_size(2)  + 2/3*(container_size(4) - figure_size(4));
+        % adjust the specified figure position to fig nicely over GCBF
+        % or into the upper 3rd of the screen
+        %  Copyright 1999-2010 The MathWorks, Inc.
+        %  $Revision: 1.1.6.5 $
+        parentHandle = gcbf;
+        convertData.destinationUnits = figure_units;
+        if ~isempty(parentHandle)
+            % If there is a parent figure
+            convertData.hFig = parentHandle;
+            convertData.size = get(parentHandle,'Position');
+            convertData.sourceUnits = get(parentHandle,'Units');
+            c = [];
+        else
+            % If there is no parent figure, use the root's data
+            % and create a invisible figure as parent
+            convertData.hFig = figure('visible','off');
+            convertData.size = get(0,'ScreenSize');
+            convertData.sourceUnits = get(0,'Units');
+            c = onCleanup(@() close(convertData.hFig));
+        end
+        % Get the size of the dialog parent in the dialog units
+        container_size = hgconvertunits(convertData.hFig, convertData.size ,...
+            convertData.sourceUnits, convertData.destinationUnits, get(convertData.hFig,'Parent'));
+        delete(c);
+        figure_size(1) = container_size(1)  + 1/2*(container_size(3) - figure_size(3));
+        figure_size(2) = container_size(2)  + 2/3*(container_size(4) - figure_size(4));
     end % end function getnicedialoglocation
+
     function setdefaultbutton(figHandle, btnHandle)
-    % WARNING: This feature is not supported in MATLAB and the API and
-    % functionality may change in a future release.
-    %SETDEFAULTBUTTON Set default button for a figure.
-    %  SETDEFAULTBUTTON(BTNHANDLE) sets the button passed in to be the default button
-    %  (the button and callback used when the user hits "enter" or "return"
-    %  when in a dialog box.
-    %
-    %  This function is used by inputdlg.m, msgbox.m, questdlg.m and
-    %  uigetpref.m.
-    %
-    %  Example:
-    %
-    %  f = figure;
-    %  b1 = uicontrol('style', 'pushbutton', 'string', 'first', ...
-    %       'position', [100 100 50 20]);
-    %  b2 = uicontrol('style', 'pushbutton', 'string', 'second', ...
-    %       'position', [200 100 50 20]);
-    %  b3 = uicontrol('style', 'pushbutton', 'string', 'third', ...
-    %       'position', [300 100 50 20]);
-    %  setdefaultbutton(b2);
-    %
-    %  Copyright 2005-2007 The MathWorks, Inc.
-    %--------------------------------------- NOTE ------------------------------------------
-    % This file was copied into matlab/toolbox/local/private.
-    % These two files should be kept in sync - when editing please make sure
-    % that *both* files are modified.
-    % Nargin Check
-    error(nargchk(1, 2, nargin))
-    if (usejava('awt') == 1)
-        % We are running with Java Figures
-        useJavaDefaultButton(figHandle, btnHandle)
-    else
-        % We are running with Native Figures
-        useHGDefaultButton(figHandle, btnHandle);
-    end
+        % WARNING: This feature is not supported in MATLAB and the API and
+        % functionality may change in a future release.
+        %SETDEFAULTBUTTON Set default button for a figure.
+        %  SETDEFAULTBUTTON(BTNHANDLE) sets the button passed in to be the default button
+        %  (the button and callback used when the user hits "enter" or "return"
+        %  when in a dialog box.
+        %
+        %  This function is used by inputdlg.m, msgbox.m, questdlg.m and
+        %  uigetpref.m.
+        %
+        %  Example:
+        %
+        %  f = figure;
+        %  b1 = uicontrol('style', 'pushbutton', 'string', 'first', ...
+        %       'position', [100 100 50 20]);
+        %  b2 = uicontrol('style', 'pushbutton', 'string', 'second', ...
+        %       'position', [200 100 50 20]);
+        %  b3 = uicontrol('style', 'pushbutton', 'string', 'third', ...
+        %       'position', [300 100 50 20]);
+        %  setdefaultbutton(b2);
+        %
+        %  Copyright 2005-2007 The MathWorks, Inc.
+        %--------------------------------------- NOTE ------------------------------------------
+        % This file was copied into matlab/toolbox/local/private.
+        % These two files should be kept in sync - when editing please make sure
+        % that *both* files are modified.
+        % Nargin Check
+%         error(nargchk(1, 2, nargin))
+        narginchk(1,2)
+        if (usejava('awt') == 1)
+            % We are running with Java Figures
+            useJavaDefaultButton(figHandle, btnHandle)
+        else
+            % We are running with Native Figures
+            useHGDefaultButton(figHandle, btnHandle);
+        end
+        
         function useJavaDefaultButton(figH, btnH)
             % Get a UDD handle for the figure.
             fh = handle(figH);

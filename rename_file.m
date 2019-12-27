@@ -39,7 +39,7 @@ elseif strcmp(language,'C++')
 end
 
 
-movefile(fullfile(grade_dir,fileIn.name),fullfile(grade_dir,newName))
+movefile(fullfile(grade_dir,fileIn.name),fullfile(grade_dir,newName));
 outFile = dir(fullfile(grade_dir,newName));
 
 

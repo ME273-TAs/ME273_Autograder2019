@@ -22,13 +22,6 @@ function [Score, Feedback] = FP_Grader(filename)
 % V3 - 
 % 
 %--------------------------------------------------------------
-% will take all these out for regrading
-if strcmp(filename,'FP_2003.m') || strcmp(filename,'FP_2416.m') || strcmp(filename,'FP_2824.m')
-    Score = 0;
-    Feedback = 'Your code produced an infinite while loop';
-    return
-end
-
 % the TRY/CATCH structure is used to prevent code crashes
 try
     

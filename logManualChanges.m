@@ -30,8 +30,59 @@ function logManualChanges(configVars, newGrades, oldGrades)
 % VERSION HISTORY TRACKED WITH GIT
 %
 %==============================================END-HEADER======
+return
 
-disp('Remember to write the logManualChanges.m function.');
+columnNames = oldGrades.Properties.VariableNames;
+labnum = regexp(columnNames{6},'\d');
+logfileName = ['Lab',num2str(labnum),'ChangeLog.txt'];
+disp(['logging manual changes to ',logfileName]);
+savelocation = fullfile('..','GradedLabs',['Lab',num2str(labnum),'Graded'],'Archives',logfileName);
+fileID = fopen(savelocation,'w');  % a for append, w for write and delete old contents (will use w for debugging)
+
+oldGradesCell = table2cell(oldGrades);
+newGradesCell = table2cell(newGrades);
+
+[row,col] = size(oldGradesCell);
+
+
+% table always has the following first few columns:
+% courseID, LastName, FirstName, GoogleTag, SectionNumber, LabXScore,
+% FeedbackFlag, FirstDeadLine, FinalDeadline, ... followed by changing
+% columns
+
+% someone might edit the section number (5)
+
+for i = 1:row
+    for j = 5:col
+        O = oldGradesCell{i,j};
+        N = newGradesCell{i,j};
+        if isa(O,'double') && isa(N,'double')
+            if abs(O - N) > 0.0001
+                fprintf(fileID,[columnNames{j},' different on row ',num2str(i),'\r\n']);
+                fprintf(fileID,['Old value, New value\r\n',num2str(O),', ',num2str(N),'\r\n\r\n']);
+                'not the same double!'
+            end
+        elseif (isa(O,'string') && isa(N,'string')) || (isa(O,'char') && isa(N,'char'))
+            if ~strcmp(O,N)
+                fprintf(fileID,[columnNames{j},' different on row ',num2str(i),'\r\n']);
+                fprintf(fileID,['Old value, New value\r\n',O,', ',N,'\r\n\r\n']);
+                'not the same string!'
+            end
+        elseif isa(O,'datetime') && isa(N,'datetime')
+            if O ~= N
+                fprintf(fileID,[columnNames{j},' different on row ',num2str(i),'\r\n']);
+                fprintf(fileID,['Old value, New value\r\n',O,', ',N,'\r\n\r\n']);
+                'not the same date!'
+            end
+        else
+            'not the same data type!'
+        end
+    end
+end
+
+
+fclose(fileID);
+
 
 % This function would become part of an unimplemented feature that would
 % create a log file to record all of the grading actions that are taken.

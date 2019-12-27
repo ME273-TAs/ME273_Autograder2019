@@ -43,7 +43,6 @@ function outFile = programSetup(currentLab, labParts, roster, regrade, manualGra
 %==============================================END-HEADER======
 % split some of the inputs
 labNum = currentLab.num;
-dueDate = currentLab.dueDate;
 
 % run config file
 configVars = configAutograder(labNum);
@@ -53,7 +52,8 @@ configVars = configAutograder(labNum);
 if strcmp(currentLab.language,'C++') && ispc == 1
     uiwait(errordlg(['ERROR: The current grading system only allows compiling ',...
         'and running .cpp files on a Linux machine. You must use the Linux computers ',...
-        'in the 4th floor CB CAEDM or the 1st floor EB CAEDM to grade this Lab.'],...
+        'in the 4th floor CB CAEDM or the 1st floor EB CAEDM to grade this Lab. ',...
+        'You can also access a linux machine via RGS. See caedm.et.byu.edu/wiki/index.php/RGS'],... 
         'C++ Lab Grading','modal'));
     return; 
 end

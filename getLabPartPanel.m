@@ -38,6 +38,7 @@ function handles = getLabPartPanel(parent, name, defaultGrader, posy, n)
 %     handles.panel = uipanel(parent, 'Title', name, 'Position',[.05, posy, ...
 %         .90, 0.2]);   % change here
 % end
+% labnum = str2num(defaultGrader.name(regexp(defaultGrader.name,'\d')));
 handles.panel = uipanel(parent, 'Title', name, 'Position',[.05, posy, ...
         .90, 0.2]);   % change here
 
@@ -92,7 +93,8 @@ if type == 1 % grader
     [filename, path] = uigetfile('*.m'); % get grader file
     handles.edit.String = fullfile(path,filename);
 elseif type == 2 % submissions folder
-    handles.edit.String = uigetdir(); % get submissions dir
+    fullfile('..','Student Submissions')
+    handles.edit.String = uigetdir(fullfile('..','Student Submissions')); % get submissions dir
 end
 
 end

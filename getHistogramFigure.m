@@ -32,7 +32,7 @@ fig1 = figure('visible','off');
 ax = axes(fig1);
 % and histogram on that axes
 histogram(ax,relevantScores,'FaceColor','b')
-xlim(ax,[0,100])
+xlim([-5,105])
 % get the frame
 F = getframe(fig1);
 % convert the frame to an image array

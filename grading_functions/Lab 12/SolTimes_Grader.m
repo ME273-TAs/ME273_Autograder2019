@@ -21,6 +21,7 @@ function [Score, Feedback] =  SolTimes_Grader(filename)
 % V3 -
 %
 %--------------------------------------------------------------
+
 Score = 0.25;                % bonus score (run without errors)
 AxesLabelPoints = 0.1;       % has axes labels or title
 HasLegendPoints = 0.1;       % has a legend

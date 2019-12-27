@@ -1,4 +1,4 @@
-function [Score, Feedback] = Smoother_Grader(filename)
+function [Score, Feedback] = Smooth_Grader_Old_Jared(filename)
 
 %--------------------------------------------------------------
 % FILE: Smoother_Grader.m   

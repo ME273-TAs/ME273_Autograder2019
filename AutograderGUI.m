@@ -33,6 +33,33 @@ classdef AutograderGUI < handle
             self.fig = figure('Visible','off','NumberTitle','off','Name',...
                 'ME273 Autograder','Position',[100 124 1200 650],...
                 'Resize','off');
+            % turn off the standard menu and tool bars
+            set(self.fig, 'MenuBar', 'none');
+            set(self.fig, 'ToolBar', 'none');
+            % make a few custom menu bar items
+            help = uimenu(self.fig,'Text','&Help');
+            about = uimenu(self.fig,'Text','&About');
+            
+            % declares the text of each menu item and the callback function
+            % asscoiated. 
+            uimenu(help,'Text','&Basic Grading','MenuSelectedFcn',@Menu1Selected);
+            uimenu(help,'Text','&Advanced Options','MenuSelectedFcn',@Menu2Selected);
+            uimenu(help,'Text','&C++ Grading','MenuSelectedFcn',@Menu3Selected);
+            uimenu(help,'Text','&Troublshooting','MenuSelectedFcn',@Menu4Selected);
+            
+            function Menu1Selected(src,event)
+                web("https://github.com/cgrooves/ME273_Autograder/blob/master/README.md")
+            end
+            function Menu2Selected(src,event)
+                '2'
+            end
+            function Menu3Selected(src,event)
+                '3'
+            end
+            function Menu4Selected(src,event)
+                '4'
+            end
+            
             
             % set current lab to nothing
             self.currentLab = nan;
