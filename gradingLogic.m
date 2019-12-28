@@ -30,6 +30,7 @@ function [feedbackFlag, gradingAction] = gradingLogic(File, ...
 %   2 = copy over the old scores and feedback
 %   3 = late grading
 %   4 = no-submit, 1st warning
+%
 %   feedbackFlag - new feedback flag to record
 %
 %
@@ -81,6 +82,15 @@ if isstruct(File) % filter students that haven't submitted
             end
         end
         
+    elseif OldScore == 0 && ...
+            ( (datetime(File.date) <= FirstDeadline + 7) || ...
+            ( (datetime(File.date) <= CurrentDeadline) && (regrading) ) )
+        % Added by Jared Hale on Dec. 28, 2019.
+        % This elseif will grade late submissions as they come in so
+        % student's code can still be graded for feedback and a grade
+        % before waiting a week for the resubmission deadline.
+        gradingAction = 3;
+        feedbackFlag = 1;
     else % if the file was submitted after the deadline
         gradingAction = 2; % copy over the old scores and feedback
         feedbackFlag = OldFeedbackFlag;
