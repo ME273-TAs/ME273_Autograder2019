@@ -30,6 +30,7 @@ function [feedbackFlag, gradingAction] = gradingLogic(File, ...
 %   2 = copy over the old scores and feedback
 %   3 = late grading
 %   4 = no-submit, 1st warning
+%   6 = late submission Feedback Grading - Added by Jared H. 12/28/19
 %
 %   feedbackFlag - new feedback flag to record
 %
@@ -63,7 +64,11 @@ if isstruct(File) % filter students that haven't submitted
             % Jared Oliphant 1/22/2019
             % see also 'dynamicToStatic.m' and 'get_lab_part_score.m'
             % and 'configAutograder.m'
-            if OldScore < configVars.weights.latePenalty && ~OldLate  && datetime(File.date) > FirstDeadline
+            if OldScore < configVars.weights.latePenalty && datetime(File.date) > FirstDeadline 
+                % 12/28/19 Jared H ommit && ~OldLate to account for changes
+                % made to code about late submissions still getting
+                % feedback before final due date
+                
                 % if it satisfies the regrading criteria    (after the
                 % firstDeadline means it is a resubmission.
                 gradingAction = 3; % late grading
@@ -82,9 +87,7 @@ if isstruct(File) % filter students that haven't submitted
             end
         end
         
-    elseif OldScore == 0 && ...
-            ( (datetime(File.date) <= FirstDeadline + 7) || ...
-            ( (datetime(File.date) <= CurrentDeadline) && (regrading) ) )
+    elseif OldScore == 0 && (datetime(File.date) <= FirstDeadline + 7)
         % Added by Jared Hale on Dec. 28, 2019.
         % This elseif will grade late submissions as they come in so
         % student's code can still be graded for feedback and a grade
