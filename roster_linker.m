@@ -177,7 +177,7 @@ for i = 1:m
 
             % if the submission date is before the current deadline and it
             % was submitted before the pseudodate ("now")
-            if (~manualGrading.flag && d < rosterTable.CurrentDeadline{i} && ...
+            if (~manualGrading.flag && ...
                     d <= pseudoDate) || manualGrading.flag
                 
                 % if there exists a current file for this student and the
