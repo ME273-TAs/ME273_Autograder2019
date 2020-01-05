@@ -52,6 +52,11 @@ CommentScore = NaN;
 CommentFeedback = '';
 error = 0;
 
+% if filename == 'Rect_4351.m'
+%     HeaderScore = 2;
+%     CommentScore = 2;
+%     return
+% end
 
 try                             % TRY structure used to catch errors
 
@@ -196,6 +201,10 @@ try                             % TRY structure used to catch errors
 
 catch ERR
     ERR
+    try
+        fclose(f);     % close the file that was opened (saves memory)
+    catch
+    end
 end
 
 
