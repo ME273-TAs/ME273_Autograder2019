@@ -205,6 +205,12 @@ catch ERR
         fclose(f);     % close the file that was opened (saves memory)
     catch
     end
+    if isnan(CommentScore)
+        CommentScore = 0;
+    end
+    if isnan(HeaderScore)
+        HeaderScore = 0;
+    end
 end
 
 
