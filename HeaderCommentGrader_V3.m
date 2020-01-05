@@ -52,6 +52,11 @@ CommentScore = NaN;
 CommentFeedback = '';
 error = 0;
 
+% if filename == 'Rect_4351.m'
+%     HeaderScore = 2;
+%     CommentScore = 2;
+%     return
+% end
 
 try                             % TRY structure used to catch errors
 
@@ -196,6 +201,16 @@ try                             % TRY structure used to catch errors
 
 catch ERR
     ERR
+    try
+        fclose(f);     % close the file that was opened in case the file is still open (will cause issues if left open when trying to move/rename)
+    catch
+    end
+    if isnan(CommentScore)
+        CommentScore = 0;
+    end
+    if isnan(HeaderScore)
+        HeaderScore = 0;
+    end
 end
 
 
