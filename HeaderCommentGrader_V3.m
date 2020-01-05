@@ -202,7 +202,7 @@ try                             % TRY structure used to catch errors
 catch ERR
     ERR
     try
-        fclose(f);     % close the file that was opened (saves memory)
+        fclose(f);     % close the file that was opened in case the file is still open (will cause issues if left open when trying to move/rename)
     catch
     end
     if isnan(CommentScore)
