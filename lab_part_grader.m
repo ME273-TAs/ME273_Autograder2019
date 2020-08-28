@@ -98,19 +98,21 @@ for i = 1:n
 
         % Headers and Comments
         if strcmp(currentLab.language,'MATLAB')
-            [~, headerFeedback, ~, commentFeedback, ~] = ...
+            [headerScore, headerFeedback, commentScore, commentFeedback, ~] = ...
                 HeaderCommentGrader_V3(filename);
         else
-            [~, headerFeedback, ~, commentFeedback, ~] = ...
+            [headerScore, headerFeedback, commentScore, commentFeedback, ~] = ...
                 HeaderCommentGrader_Cplusplus(filename);
         end
         % Tack on score and feedback for each
-        submissionsTable.Score(i) = nan;
-        submissionsTable.CodeScore(i) = nan;
+        submissionsTable.Score(i) = configVars.weights.code*codeScore + ...
+            configVars.weights.header*headerScore + ...
+            configVars.weights.comments*commentScore;
+        submissionsTable.CodeScore(i) = codeScore;
         submissionsTable.CodeFeedback{i} = codeFeedback;
-        submissionsTable.HeaderScore(i) = nan;
+        submissionsTable.HeaderScore(i) = headerScore;
         submissionsTable.HeaderFeedback{i} = headerFeedback;
-        submissionsTable.CommentScore(i) = nan;
+        submissionsTable.CommentScore(i) = commentScore;
         submissionsTable.CommentFeedback{i} = commentFeedback;
         
         % set late flag (if applicable)
@@ -127,12 +129,12 @@ for i = 1:n
 
     elseif gradingAction == 2 % copy the previously recorded grade
 
-        submissionsTable.Score(i) = nan;
-        submissionsTable.CodeScore(i) = nan;
+        submissionsTable.Score(i) = submissionsTable.OldScore(i);
+        submissionsTable.CodeScore(i) = submissionsTable.OldCodeScore(i);
         submissionsTable.CodeFeedback{i} = submissionsTable.OldCodeFeedback{i};
-        submissionsTable.HeaderScore(i) = nan;
+        submissionsTable.HeaderScore(i) = submissionsTable.OldHeaderScore(i);
         submissionsTable.HeaderFeedback{i} = submissionsTable.OldHeaderFeedback{i};
-        submissionsTable.CommentScore(i) = nan;
+        submissionsTable.CommentScore(i) = submissionsTable.OldCommentScore(i);
         submissionsTable.CommentFeedback{i} = submissionsTable.OldCommentFeedback{i};
         submissionsTable.Late(i) = submissionsTable.OldLate(i);
         
