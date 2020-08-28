@@ -68,18 +68,10 @@ function gradingFeedbackTest() {
   var labFile = folder.getFilesByName("Lab5Feedback")
   var file = labFile.next()
   
-  //var ssID = ssNew.getId()
-  //var ssFile = DriveApp.getFileById(ssID)
-  //Logger.log(ssID)
-  //Logger.log(ssFile)
-  //var newFile = ssFile.makeCopy('Lab5Feedback', folder)
-  //DriveApp.getFileById(ssID).setTrashed(true)
-  
-  
   // setup spreadsheet reference - because Google can't operate on the CSV directly
   var ssNew = SpreadsheetApp.openById(file.getId());
   var csvData = Utilities.parseCsv(fileNew.getBlob().getDataAsString());
-  var sheet = ssNew.getSheets()[0];
+  var sheet = ssNew.getSheets()[1];
   sheet.getRange(1, 1, csvData.length, csvData[0].length).setValues(csvData);
   var dataRange = sheet.getDataRange();
   
@@ -136,13 +128,19 @@ function gradingFeedbackTest() {
   sheet.deleteColumns(2, (PARTSTART -1))
   
   //Set Column Widths
-  sheet.setColumnWidth(1, 60)
+  var sheet = ssNew.getSheets()[0];
+  sheet.setColumnWidth(1, 250)
   
-  for (var k = 0; k < p; k++){
-    var refNum = 2 + (k * 3);
-    sheet.setColumnWidth(refNum, 400)
-    sheet.setColumnWidths(refNum + 1, 2, 200)
+  var noCols = sheet.getLastColumn();
+  for (var k = 2; k <= noCols; k++){
+    sheet.setColumnWidth(k, 350)
   }
+  
+  //for (var k = 0; k < p; k++){
+  //  var refNum = 2 + (k * 3);
+  //  sheet.setColumnWidth(refNum, 400)
+  //  sheet.setColumnWidths(refNum + 1, 2, 200)
+  //}
   
   
   //Freeze First Column & Row
@@ -150,101 +148,32 @@ function gradingFeedbackTest() {
   sheet.setFrozenRows(1)
   
   //Format Text Wrapping
-  var range = sheet.getRange("Sheet1!1:1000")
+  var noRows = sheet.getLastRow();
+  var range = sheet.getRange(1,1,noRows,noCols)
   range.setWrapStrategy(SpreadsheetApp.WrapStrategy.WRAP)
   
-  /*
-  // For each student
-  for (var i = startTestStudent; i < (startTestStudent + numTestStudents); i++) // test line
-  {    
-    var row = data[i];
-    var n = row.length;
-    var p = (n - (PARTSTART + 1))/(PARTLENGTH_FRONT + PARTLENGTH_BACK);
-    Logger.log(i)
-    var courseID = row[COURSEID];
-    var lastName = row[LASTNAME];
-    var firstName = row[FIRSTNAME];
-    var labScore = Math.round(row[LABSCORE]*4);
-    var feedbackFlag = parseInt(row[FEEDBACKFLAG])
-    var email = row[row.length - EMAIL];
-    Logger.log(p)
-    Logger.log(feedbackFlag)
-    if (feedbackFlag != 1) {
-      continue;
-    }
-    
-    // get info for each assignment
-    var assignmentBreakdown = '';
-    
-    for (var j = 1; j <= p; j++)
-    {
-      var c = PARTSTART + (j-1)*PARTLENGTH_FRONT;
-      Logger.log(j)
-      // get lab part name and scores
-      var labPartName = row[c];
-      var late = row[c + LATE];
-      var labPartScore = Math.round(row[c + PARTSCORE]*100);
-      var codeScore = Math.round(row[c + CODESCORE]*100);
-      var headerScore = Math.round(row[c+HEADERSCORE]*100);
-      var commentScore = Math.round(row[c+COMMENTSCORE]*100);
-      
-      // get the right index for lab part feedback
-      c = n - (p - (j-1))*PARTLENGTH_BACK - 1;
-      
-      // get lab part feedback
-      var codeFeedback = row[c + CODEFEEDBACK];
-      var headerFeedback = row[c + HEADERFEEDBACK];
-      var commentFeedback = row[c + COMMENTFEEDBACK];
-      
-      // formulate feedback string
-      var line1 = labPartName + ' Assignment ---------------------------------\n';
-      var line2 = 'Total Score:\t' + labPartScore + ' % \n';
-      var line3 = 'Code Score:\t' + codeScore + ' % \n';
-      var line4 = 'Code Feedback: ' + codeFeedback + '\n';
-      var line5 = 'Header Score:\t' + headerScore + ' % \n';
-      var line6 = 'Header Feedback: ' + headerFeedback + '\n';
-      var line7 = 'Comment Score:\t' + commentScore + ' % \n';
-      var line8 = 'Comment Feedback: ' + commentFeedback + '\n';
-      var line9 = '---------------------------------------------------------------\n\n';
-      
-      // Add in late notice if applicable
-      if (late == 1){
-        line8 += 'Note: Based on the date of your submission, this part of the lab was graded as ' + 
-          'resubmission and is subject to the regrading policy.\n';
+  //Format Text Allignment
+  var range = sheet.getRange(1, 1, 1, noCols)
+  range.setHorizontalAlignment("center")
+  range.setFontSize(11)
+  range.setFontWeight("bold")
+  
+  var range = sheet.getRange(1,1,noRows)
+  range.setFontSize(11)
+  range.setFontWeight("bold")
+  
+  // Get Rid of Nans
+  var sheet = ssNew.getSheets()[1];
+  for (var u = 1; u <= noRows; u++){
+    for (var v = 1; v <= noCols; v++){
+      range = sheet.getRange(v, u);
+      var cellVal = range.getValue()
+      if (cellVal == "NaN"){
+        range.setValue(" ")
       }
-      
-      assignmentBreakdown += line1 + line2 + line3 + line4 + line5 + line6 + line7 + line8 + line9;
     }
-    
-    /*
-    hook together text
-    var opener = firstName + ' ' + lastName + ':\n\n';
-    var intro = 'The following feedback was automatically generated from your recent lab ' + labNumber + ' submission. \n\n';
-    */
-    // var line1 = '///////////////////*** Lab ' + labNumber + ' Breakdown ***//////////////////\n\n';
-    /*
-    var line2 = 'Overall Lab ' + labNumber + ' Score:\t' + labScore + ' % \n\n';    
-    var line3 = '**************Assignment Breakdown*****************\n';
-    var line4 = assignmentBreakdown;
-    
-    var ending = '**If you have any questions on your assignment grade, please go whine to your mom, I don\'t want to hear it.**';    
-    
-    var text = opener + intro + line1 + line2 + line3 + line4 + ending;
-    var subject = 'ME 273 Lab ' + labNumber + ' Grade';
-    
-    // send email
-    // Logger.log(text)
-    // MailApp.sendEmail(testEmail,subject,text); // test line    
-    */
-    /*
   }
-  */
   
   
-//   delete files
-//  fileNew.setTrashed(true);
-//  var ssID = ssNew.getId();
-//  var ssFile = DriveApp.getFileById(ssID);
-//  ssFile.setTrashed(true);
 }
 
