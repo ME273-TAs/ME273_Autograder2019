@@ -61,8 +61,23 @@ function gradingFeedbackTest() {
     }
   }
   
-  // setup spreadsheet - because Google can't operate on the CSV directly
-  var ssNew = SpreadsheetApp.create("SendLabFeedback");
+  
+  // Find Spreadsheet in Folder: 2020_Grading and prep to be written over
+  var gradeFolder = DriveApp.getFoldersByName("2020_Grading")
+  var folder = gradeFolder.next()
+  var labFile = folder.getFilesByName("Lab5Feedback")
+  var file = labFile.next()
+  
+  //var ssID = ssNew.getId()
+  //var ssFile = DriveApp.getFileById(ssID)
+  //Logger.log(ssID)
+  //Logger.log(ssFile)
+  //var newFile = ssFile.makeCopy('Lab5Feedback', folder)
+  //DriveApp.getFileById(ssID).setTrashed(true)
+  
+  
+  // setup spreadsheet reference - because Google can't operate on the CSV directly
+  var ssNew = SpreadsheetApp.openById(file.getId());
   var csvData = Utilities.parseCsv(fileNew.getBlob().getDataAsString());
   var sheet = ssNew.getSheets()[0];
   sheet.getRange(1, 1, csvData.length, csvData[0].length).setValues(csvData);
@@ -105,8 +120,18 @@ function gradingFeedbackTest() {
   if (!isNaN(parseFloat(data[0][LABSCORE][4])) && isFinite(data[0][LABSCORE][4])){
     labNumber += data[0][LABSCORE][4];
     }
+    
+  var row = data[1];
+  var n = row.length;
+  var p = (n - (PARTSTART + 1))/(PARTLENGTH_FRONT + PARTLENGTH_BACK);
+  
+  // Remove Unwanted Columns in Feedback Page
+  for (var j = p-1; j >= 0; j--){
+    var startDelete = 10 + (PARTLENGTH_FRONT * j);
+    sheet.deleteColumns(startDelete, (PARTLENGTH_FRONT))
+  }
 
- 
+  /*
   // For each student
   for (var i = startTestStudent; i < (startTestStudent + numTestStudents); i++) // test line
   {    
@@ -189,16 +214,9 @@ function gradingFeedbackTest() {
     // Logger.log(text)
     // MailApp.sendEmail(testEmail,subject,text); // test line    
     */
+    /*
   }
-  
-  // Move Spreadsheet to Folder 2020 Grading and Replace old File if Necessary
-  var ssID = ssNew.getId()
-  var ssFile = DriveApp.getFileById(ssID)
-  var gradeFolder = DriveApp.getFoldersByName("2020_Grading")
-  Logger.log(ssID)
-  Logger.log(ssFile)
-  var newFile = ssFile.makeCopy('Lab05Grading', gradeFolder.next())
-  //DriveApp.getFileById(ssID).setTrashed(true)
+  */
   
   
 //   delete files
