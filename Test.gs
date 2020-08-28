@@ -126,11 +126,33 @@ function gradingFeedbackTest() {
   var p = (n - (PARTSTART + 1))/(PARTLENGTH_FRONT + PARTLENGTH_BACK);
   
   // Remove Unwanted Columns in Feedback Page
+  sheet.deleteColumn(n)
+  
   for (var j = p-1; j >= 0; j--){
     var startDelete = 10 + (PARTLENGTH_FRONT * j);
     sheet.deleteColumns(startDelete, (PARTLENGTH_FRONT))
   }
-
+  
+  sheet.deleteColumns(2, (PARTSTART -1))
+  
+  //Set Column Widths
+  sheet.setColumnWidth(1, 60)
+  
+  for (var k = 0; k < p; k++){
+    var refNum = 2 + (k * 3);
+    sheet.setColumnWidth(refNum, 400)
+    sheet.setColumnWidths(refNum + 1, 2, 200)
+  }
+  
+  
+  //Freeze First Column & Row
+  sheet.setFrozenColumns(1)
+  sheet.setFrozenRows(1)
+  
+  //Format Text Wrapping
+  var range = sheet.getRange("Sheet1!1:1000")
+  range.setWrapStrategy(SpreadsheetApp.WrapStrategy.WRAP)
+  
   /*
   // For each student
   for (var i = startTestStudent; i < (startTestStudent + numTestStudents); i++) // test line
