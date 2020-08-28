@@ -39,7 +39,7 @@ configVars.weights.comments = 0.1;
 % Jared Oliphant 1/22/2019
 % see also 'dynamicToStatic.m' and 'get_lab_part_score.m' and
 % 'gradingLogic.m'
-configVars.weights.latePenalty = 0.75;
+configVars.weights.latePenalty = 1;
 
 % added this field to allow the grader to output a .csv
 % that will play nice with learning suite
