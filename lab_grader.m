@@ -149,10 +149,11 @@ for i = 1:n
         s = configVars.studentFields.l + (i-1)*configVars.partFields.pf; 
         masterArray{r,s} = part.PartName{j};
         masterArray{r,s+1} = part.Late(j);
-        masterArray{r, s+2} = part.Score(j);
-        masterArray{r,s+3} = part.CodeScore(j);
-        masterArray{r,s+4} = part.HeaderScore(j);
-        masterArray{r,s+5} = part.CommentScore(j);
+        masterArray{r,s+2} = "Hello World";
+        masterArray{r, s+3} = part.Score(j);
+        masterArray{r,s+4} = part.CodeScore(j);
+        masterArray{r,s+5} = part.HeaderScore(j);
+        masterArray{r,s+6} = part.CommentScore(j);
         
         % Backend Fields (feedback)
         s = t - (n - i + 1)*configVars.partFields.pb; % get starting col for back fields

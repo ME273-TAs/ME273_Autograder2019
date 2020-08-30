@@ -72,17 +72,18 @@ configVars.sectionDays.Friday = 5;
 % CONTENT.
 
 % Part Fields
-configVars.partFields.Front = {'Part','Late','Score','CodeScore','HeaderScore',...
+configVars.partFields.Front = {'Part','SubmissionCount','LastSubmitDate','Score','CodeScore','HeaderScore',...
     'CommentScore'};
 configVars.partFields.Back = {'CodeFeedback','HeaderFeedback','CommentFeedback'};
 configVars.partFields.pf = length(configVars.partFields.Front); % number of fields in front
 configVars.partFields.pb = length(configVars.partFields.Back); % number of fields in back
 configVars.partFields.p = configVars.partFields.pf + configVars.partFields.pb; % total number of Lab Part fields
-configVars.partFields.LateOffset = 1;
-configVars.partFields.ScoreOffset = 2;
-configVars.partFields.CodeScoreOffset = 3;
-configVars.partFields.HeaderScoreOffset = 4;
-configVars.partFields.CommentScoreOffset = 5;
+configVars.partFields.SubNumOffset = 1;
+configVars.partFields.LastSubOffset = 2;
+configVars.partFields.ScoreOffset = 3;
+configVars.partFields.CodeScoreOffset = 4;
+configVars.partFields.HeaderScoreOffset = 5;
+configVars.partFields.CommentScoreOffset = 6;
 configVars.partFields.CodeFBOffset = 0; % from the back
 configVars.partFields.HeaderFBOffset = 1;
 configVars.partFields.CommentFBOffset = 2;
