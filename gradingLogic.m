@@ -1,6 +1,6 @@
 function [feedbackFlag, gradingAction] = gradingLogic(File, ...
     CurrentDeadline, OldLate, OldFeedbackFlag, OldScore, pseudoDate, ...
-    finalGrading, configVars, FirstDeadline)
+    finalGrading, configVars, FirstDeadline, chances)
 %============================================BEGIN-HEADER=====
 % FILE: gradingLogic.m
 % AUTHOR: Caleb Groves
@@ -52,7 +52,6 @@ function [feedbackFlag, gradingAction] = gradingLogic(File, ...
 % end
 
 numSubmissions = 1;
-chances = 2;
 lastSubDate = pseudoDate - 30;
 
 if isstruct(File) % filter students that haven't submitted
@@ -78,6 +77,9 @@ if isstruct(File) % filter students that haven't submitted
                 feedbackFlag = OldFeedbackFlag;
             end
         end
+    else % if file was late, transfer old feedback and grade
+        gradingAction = 2;
+        feedbackFlag = OldFeedbackFlag;
     end
 else % if no file was submitted
     if OldScore == 0
