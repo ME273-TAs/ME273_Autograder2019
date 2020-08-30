@@ -68,7 +68,7 @@ L.addLabPart('RegressionN',fullfile('Lab 04','RegressionN_Grader.m'));    % This
 L.addLabPart('Smoother',fullfile('Lab 04','Smoother_Grader_V2.m'));    % ditto
 
 % Lab 5
-L.addLab(5,datetime(2020,09,24,15,40,0),'MATLAB',2);        % the integer value is usednegative or strange numbers for test labs
+L.addLab(5,datetime(2020,09,24,15,40,0),'MATLAB',3);        % the integer value is usednegative or strange numbers for test labs
 L.addLabPart('Newton',fullfile('Lab 05','Newton_Grader.m'));    % ditto
 L.addLabPart('Secant',fullfile('Lab 05','Secant_Grader.m'));     
 L.addLabPart('FP',fullfile('Lab 05','FP_Grader.m'));            % ditto

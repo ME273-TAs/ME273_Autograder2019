@@ -1,4 +1,4 @@
-function [feedbackFlag, gradingAction] = gradingLogic(File, ...
+function [feedbackFlag, gradingAction, numSubmissions] = gradingLogic(File, ...
     CurrentDeadline, OldLate, OldFeedbackFlag, OldScore, pseudoDate, ...
     finalGrading, configVars, FirstDeadline, chances)
 %============================================BEGIN-HEADER=====
@@ -51,28 +51,26 @@ function [feedbackFlag, gradingAction] = gradingLogic(File, ...
 %     end
 % end
 
-numSubmissions = 1;
 lastSubDate = pseudoDate - 30;
+numSubmissions = OldLate;
 
 if isstruct(File) % filter students that haven't submitted
     if datetime(File.date) <= CurrentDeadline % make sure file was submitted before deadline
         if finalGrading
             % if the grader is in finalGrading mode, set grading action
             gradingAction = 3;
-            feedbackFlag = OldFeedbackFlag;
+            feedbackFlag = 1;
         else % if the program is not running in finalGrading mode
-            if OldScore == 0 % if there is no score
-                gradingAction = 1; % perform original grading
-                feedbackFlag = 1;
-            elseif numSubmissions < chances % if the student has not exceeded feedback limitations
-                if File.date > lastSubDate
+            if numSubmissions < chances % if the student has not exceeded feedback limitations
+                if File.date > lastSubDate % if a new file has been uploaded since last time
                     gradingAction = 1;
-                    feedbackFlag = 1;
-                else % if the student has exceeded feedback limitations
+                    feedbackFlag = OldFeedbackFlag;
+                    numSubmissions = numSubmissions + 1;
+                else % if the file is the same as the last submission
                     gradingAction = 2;
                     feedbackFlag = OldFeedbackFlag;
                 end
-            else % if there is a pre-existing score
+            else % if the student has exceeded feedback limitations
                 gradingAction = 2; % copy over the old scores and feedback
                 feedbackFlag = OldFeedbackFlag;
             end
@@ -84,7 +82,7 @@ if isstruct(File) % filter students that haven't submitted
 else % if no file was submitted
     if OldScore == 0
         gradingAction = 4; % no-submit, 1st warning
-        feedbackFlag = 1;
+        feedbackFlag = OldFeedbackFlag;
     elseif OldScore ~= 0
         gradingAction = 2; % copy over the old scores and feedback
         feedbackFlag = OldFeedbackFlag;
