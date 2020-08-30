@@ -40,7 +40,7 @@ function submissionsTable = lab_part_grader(currentLab, submissionsTable,...
 %   If a student has no file linked to his/her lab part, then the Late
 %   field gets a 2 assigned to it in order to help differentiate these
 %   students from the rest in later steps.
-%  
+%
 % VERSION HISTORY TRACKED WITH GIT
 %
 %==============================================END-HEADER======
@@ -66,7 +66,7 @@ for i = 1:n
     if manualGrading.flag
         % if the current student is being manually graded
         if isstruct(submissionsTable.File{i})
-        	% set for copying over
+            % set for copying over
             feedbackFlag = manualGrading.feedbackFlag;
             gradingAction = manualGrading.gradingAction;
         else % otherwise if it's not a manually graded student
@@ -79,24 +79,25 @@ for i = 1:n
         % pass in configVars and FirstDeadline to deal with new regrading policy
         [feedbackFlag, gradingAction, submissionsTable.Late(i)] = gradingLogic(f,...
             submissionsTable.CurrentDeadline{i}, submissionsTable.OldLate(i),...
+            submissionsTable.OldLastSubmit{i},...
             submissionsTable.OldFeedbackFlag(i), submissionsTable.OldScore(i),...
             pseudoDate, regrading, configVars, submissionsTable.FirstDeadline{i},...
             currentLab.chances);
-
-    end
         
-
+    end
+    
+    
     %% GRADING
-
+    
     % Do the grading
     if gradingAction == 1 || gradingAction == 3
         % Grade each file:
         filename = f.name; % get current submission's filename
-
+        
         % Code - call grader function
         eval(['[codeScore, codeFeedback] = ', graderFile.name(1:end-2),...
             '(filename);']);
-
+        
         % Headers and Comments
         if strcmp(currentLab.language,'MATLAB')
             [headerScore, headerFeedback, commentScore, commentFeedback, ~] = ...
@@ -115,21 +116,22 @@ for i = 1:n
         submissionsTable.HeaderFeedback{i} = headerFeedback;
         submissionsTable.CommentScore(i) = commentScore;
         submissionsTable.CommentFeedback{i} = commentFeedback;
+        submissionsTable.LastSubmit{i} = f.date;
         
         % set late flag (if applicable)
         if gradingAction == 3
-            submissionsTable.Late(i) = 1;
-			% added this to make the scores behave properly
+            % %             submissionsTable.Late(i) = 1;
+            % added this to make the scores behave properly
             % nowhere in the code (before the dynamic file write out) was
             % the late penalty actually applied to the score....
-			% Jared Oliphant 2/8/2019
-			if submissionsTable.Score(i) > configVars.weights.latePenalty  % if they would have gotten more than (75%)
-				submissionsTable.Score(i) = configVars.weights.latePenalty; 
-			end 
+            % Jared Oliphant 2/8/2019
+            if submissionsTable.Score(i) > configVars.weights.latePenalty  % if they would have gotten more than (75%)
+                submissionsTable.Score(i) = configVars.weights.latePenalty;
+            end
         end
-
+        
     elseif gradingAction == 2 % copy the previously recorded grade
-
+        
         submissionsTable.Score(i) = submissionsTable.OldScore(i);
         submissionsTable.CodeScore(i) = submissionsTable.OldCodeScore(i);
         submissionsTable.CodeFeedback{i} = submissionsTable.OldCodeFeedback{i};
@@ -138,13 +140,14 @@ for i = 1:n
         submissionsTable.CommentScore(i) = submissionsTable.OldCommentScore(i);
         submissionsTable.CommentFeedback{i} = submissionsTable.OldCommentFeedback{i};
         submissionsTable.Late(i) = submissionsTable.OldLate(i);
+        submissionsTable.LastSubmit{i} = submissionsTable.OldLastSubmit{i};
         
     elseif gradingAction == 4 || gradingAction == 5
         
         submissionsTable.CodeFeedback{i} = ['No file submission found ',...
             'for this lab part. Please check to make sure that ',...
             'you formatted your filename correctly.'];
-
+        
     end
     
     % Set feedback flag

@@ -1,5 +1,5 @@
 function [feedbackFlag, gradingAction, numSubmissions] = gradingLogic(File, ...
-    CurrentDeadline, OldLate, OldFeedbackFlag, OldScore, pseudoDate, ...
+    CurrentDeadline, numSubmissions, lastSubmisDate, OldFeedbackFlag, OldScore, pseudoDate, ...
     finalGrading, configVars, FirstDeadline, chances)
 %============================================BEGIN-HEADER=====
 % FILE: gradingLogic.m
@@ -51,8 +51,11 @@ function [feedbackFlag, gradingAction, numSubmissions] = gradingLogic(File, ...
 %     end
 % end
 
-lastSubDate = pseudoDate - 30;
-numSubmissions = OldLate;
+if ~isempty(lastSubmisDate)
+    lastSubDate = lastSubmisDate;
+else
+    lastSubDate = datetime([2000,1,1,0,0,0]);
+end
 
 if isstruct(File) % filter students that haven't submitted
     if datetime(File.date) <= CurrentDeadline % make sure file was submitted before deadline
