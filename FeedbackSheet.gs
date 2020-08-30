@@ -22,7 +22,7 @@
 // as well, in the *** COLUMN ASSIGNMENTS *** section.
 // ----------------------------------------------------------------------------------
 
-function gradingFeedbackTest() {
+function feedbackSheet() {
   // get feedback csv's
   var feedbackFiles = DriveApp.getFilesByName("ME273LabFeedback.csv");
   
@@ -34,7 +34,7 @@ function gradingFeedbackTest() {
     console.error('No feedback .csv file found (must be named ME273LabFeedback.csv).');
     return;
   }
-  Logger.log(fileNew)
+  
   // get the most recent one
   while(feedbackFiles.hasNext()) {
     var file = feedbackFiles.next();
@@ -68,13 +68,17 @@ function gradingFeedbackTest() {
   var ssFile = DriveApp.getFileById(ssID);
   ssFile.setTrashed(true);
   
-  
   // Find Spreadsheet in Folder: 2020_Grading and prep to be written over
   var gradeFolder = DriveApp.getFoldersByName("2020_Grading")
   var folder = gradeFolder.next()
   var labFile = folder.getFilesByName("Lab" + labNumber + "Feedback")
-  var file = labFile.next()
-  
+  try{
+    var file = labFile.next()
+  }
+  catch(e) {
+    console.error("No Lab Feedback sheet found (must be named LabXFeedback). Please make a copy of Lab0Feedback and rename it with the desired Lab Number. Don't forget to share it with the students.");
+    return;
+  }
   
   // Set Sharing Permissions
   file.setSharing(DriveApp.Access.PRIVATE, DriveApp.Permission.NONE)
@@ -105,14 +109,15 @@ function gradingFeedbackTest() {
   
   // Lab part constants
   var PARTSTART = 9;
-  var PARTLENGTH_FRONT = 6;
+  var PARTLENGTH_FRONT = 7;
   var PARTLENGTH_BACK = 3;
   
-  var LATE = 1;
-  var PARTSCORE = 2;
-  var CODESCORE = 3;
-  var HEADERSCORE = 4;
-  var COMMENTSCORE = 5;
+  var SUBCOUNT = 1;
+  var SUBMITDATE = 2;
+  var PARTSCORE = 3;
+  var CODESCORE = 4;
+  var HEADERSCORE = 5;
+  var COMMENTSCORE = 6;
   
   var CODEFEEDBACK = 0;
   var HEADERFEEDBACK = 1;
@@ -128,8 +133,8 @@ function gradingFeedbackTest() {
   
   for (var j = p-1; j >= 0; j--){
     var startDelete = 10 + (PARTLENGTH_FRONT * j);
-    sheet.deleteColumns(startDelete + 3, 3)
-    sheet.deleteColumns(startDelete, 2)
+    sheet.deleteColumns(startDelete + 4, 3)
+    sheet.deleteColumns(startDelete, 3)
   }
   
   sheet.deleteColumns(2, (PARTSTART -1))
@@ -138,7 +143,7 @@ function gradingFeedbackTest() {
   for (var w = 2; w <= p; w++){
     var startCol = 3;
     var finCol = 2 + (w * 3)
-    Logger.log(finCol)
+    //Logger.log(finCol)
     moveColumn(startCol, finCol, sheet)
   }
   
@@ -155,13 +160,6 @@ function gradingFeedbackTest() {
   for (var k = 2; k <= noCols; k++){
     sheet.setColumnWidth(k, 350)
   }
-  
-  //for (var k = 0; k < p; k++){
-  //  var refNum = 2 + (k * 3);
-  //  sheet.setColumnWidth(refNum, 400)
-  //  sheet.setColumnWidths(refNum + 1, 2, 200)
-  //}
-  
   
   //Freeze First Column & Row
   sheet.setFrozenColumns(1)
@@ -217,6 +215,8 @@ function gradingFeedbackTest() {
   // Set Sharing Permissions
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW)
   
+  // Trash ME273LabFeedback.csv
+  fileNew.setTrashed(true)
 
 
 }
