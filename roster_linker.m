@@ -87,7 +87,7 @@ rosterTable.CurrentDeadline = cell(m,1);
 % initialize new portion of table
 rosterTable.FeedbackFlag = zeros(m,1);
 rosterTable.Score = zeros(m,1);
-rosterTable.Late = zeros(m,1);
+rosterTable.NumSub = zeros(m,1);
 rosterTable.LastSubmit = cell(m,1);
 rosterTable.CodeScore = zeros(m,1);
 rosterTable.HeaderScore = zeros(m,1);
@@ -99,7 +99,7 @@ rosterTable.CommentFeedback = cell(m,1);
 % initialize old portion of table
 rosterTable.OldFeedbackFlag = zeros(m,1);
 rosterTable.OldScore = zeros(m,1);
-rosterTable.OldLate = zeros(m,1);
+rosterTable.OldNumSub = zeros(m,1);
 rosterTable.OldLastSubmit = cell(m,1);
 rosterTable.OldCodeScore = zeros(m,1);
 rosterTable.OldHeaderScore = zeros(m,1);
@@ -135,6 +135,7 @@ for i = 1:m
                 if prevGraded.FirstDeadline{j}.Year < 2010
                     prevGraded.FirstDeadline{j}.Year = datetime('now').Year;
                     prevGraded.FinalDeadline{j}.Year = datetime('now').Year;
+                    prevGraded.SubDate{j}.Year = datetime('now').Year;
                 end
                 % copy over old student information 
                 rosterTable.FirstDeadline{i} = ...
@@ -143,7 +144,7 @@ for i = 1:m
                     datetime(prevGraded.FinalDeadline{j});
                 rosterTable.OldFeedbackFlag(i) = prevGraded.FeedbackFlag{j};
                 rosterTable.OldScore(i) = prevGraded.Score{j};
-                rosterTable.OldLate(i) = prevGraded.Late{j};
+                rosterTable.OldNumSub(i) = prevGraded.Late{j};
                 rosterTable.OldLastSubmit{i} = prevGraded.SubDate{j};
                 rosterTable.OldCodeScore(i) = prevGraded.CodeScore{j};
                 rosterTable.OldHeaderScore(i) = prevGraded.HeaderScore{j};

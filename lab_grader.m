@@ -148,7 +148,7 @@ for i = 1:n
         % get starting column for front fields
         s = configVars.studentFields.l + (i-1)*configVars.partFields.pf; 
         masterArray{r,s} = part.PartName{j};
-        masterArray{r,s+1} = part.Late(j);
+        masterArray{r,s+1} = part.NumSub(j);
         masterArray{r,s+2} = part.LastSubmit(j);
         masterArray{r, s+3} = part.Score(j);
         masterArray{r,s+4} = part.CodeScore(j);
