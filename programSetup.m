@@ -1,4 +1,4 @@
-function outFile = programSetup(currentLab, labParts, roster, regrade, manualGrading, pseudoDate)
+function outFile = programSetup(currentLab, labParts, roster, finalGrade, manualGrading, pseudoDate)
 %============================================BEGIN-HEADER=====
 % FILE: programSetup.m
 % AUTHOR: Caleb Groves
@@ -23,7 +23,7 @@ function outFile = programSetup(currentLab, labParts, roster, regrade, manualGra
 %   string), graderfile (structure with fields name, path as character
 %   arrays)
 %
-%   regrade - 0: original grading, 1: re-grading mode
+%   finalGrad - 0: feedback grading, 1: final-grading mode
 %
 %   pseudoDate - Matlab datetime that the autograder will interpret as
 %   "now" (useful for retroactive grading).
@@ -71,7 +71,7 @@ else % if a table is read in
         manualGrading, pseudoDate, prevGraded); % always do original grading first
 end
 
-if regrade % if we're going to grade resubmissions
+if finalGrade % if we're going to perform final grading
     master = autograder(currentLab, roster, configVars, labParts, 1, ...
         manualGrading, pseudoDate, master); % run in regrading mode with output generated
     % by original grading run, above

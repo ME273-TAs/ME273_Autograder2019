@@ -253,11 +253,11 @@ classdef AutograderGUI < handle
             roster.path = '';
             
             % regrading and manual grading
-            regrade = self.settingsGUI.grading_opts.resubmission_grading.Value;
+            finalGrade = self.settingsGUI.grading_opts.resubmission_grading.Value;
             manual.flag = self.settingsGUI.grading_opts.manual.Value;
             manual.feedbackFlag = 2;
             
-            if regrade
+            if finalGrade
                 manual.gradingAction = 3;
             else
                 manual.gradingAction = 1;
@@ -309,7 +309,7 @@ classdef AutograderGUI < handle
             end
             
             % Call programSetup            
-            programSetup(self.currentLab, labParts, roster, regrade, manual, pseudoDate);
+            programSetup(self.currentLab, labParts, roster, finalGrade, manual, pseudoDate);
             
             % show finished message
             uiwait(msgbox(['Lab ',num2str(labNum),' grading complete!'],...

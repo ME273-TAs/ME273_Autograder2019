@@ -1,5 +1,5 @@
 function submissionsTable = lab_part_grader(currentLab, submissionsTable,...
-    graderFile, configVars, regrading, manualGrading, pseudoDate)
+    graderFile, configVars, finalGrading, manualGrading, pseudoDate)
 
 %============================================BEGIN-HEADER=====
 % FILE: lab_part_grader.m
@@ -21,7 +21,7 @@ function submissionsTable = lab_part_grader(currentLab, submissionsTable,...
 %   graderFile - Matlab structure for the grading function file with 2
 %   fields: name and path.
 %
-%   regrading - 0: Original grading mode, 1: Re-grading mode.
+%   finalGrading - 0: feedback mode, 1: Final-grading mode.
 %
 %   pseudoDate - date and time that the function will assume "now" is.
 %
@@ -81,7 +81,7 @@ for i = 1:n
             submissionsTable.CurrentDeadline{i}, submissionsTable.OldNumSub(i),...
             submissionsTable.OldLastSubmit{i},...
             submissionsTable.OldFeedbackFlag(i), submissionsTable.OldScore(i),...
-            pseudoDate, regrading, configVars, submissionsTable.FirstDeadline{i},...
+            pseudoDate, finalGrading, configVars, submissionsTable.FirstDeadline{i},...
             currentLab.chances);
         
     end
@@ -93,10 +93,14 @@ for i = 1:n
     if gradingAction == 1 || gradingAction == 3
         % Grade each file:
         filename = f.name; % get current submission's filename
-        
+        if gradingAction == 3
+            finalGrade = '1';
+        else
+            finalGrade = '0';
+        end
         % Code - call grader function
         eval(['[codeScore, codeFeedback] = ', graderFile.name(1:end-2),...
-            '(filename);']);
+            '(filename,',finalGrade,');']);
         
         % Headers and Comments
         if strcmp(currentLab.language,'MATLAB')
@@ -117,18 +121,6 @@ for i = 1:n
         submissionsTable.CommentScore(i) = commentScore;
         submissionsTable.CommentFeedback{i} = commentFeedback;
         submissionsTable.LastSubmit{i} = f.date;
-        
-        % set late flag (if applicable)
-        if gradingAction == 3
-            % %             submissionsTable.Late(i) = 1;
-            % added this to make the scores behave properly
-            % nowhere in the code (before the dynamic file write out) was
-            % the late penalty actually applied to the score....
-            % Jared Oliphant 2/8/2019
-            if submissionsTable.Score(i) > configVars.weights.latePenalty  % if they would have gotten more than (75%)
-                submissionsTable.Score(i) = configVars.weights.latePenalty;
-            end
-        end
         
     elseif gradingAction == 2 % copy the previously recorded grade
         
