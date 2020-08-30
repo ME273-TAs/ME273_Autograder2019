@@ -2,7 +2,8 @@
 roster.csv
 ._*.m
 *DS_Store
-
+parameters.mat
+*.m~auto
 
 # no need to track the grading_directory/
 grading_directory/
