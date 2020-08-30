@@ -1,4 +1,4 @@
-function [score, Feedback] = Trapezoid_Grader(filename)
+function [score, Feedback] = Trapezoid_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: FBC_Grader.m
@@ -9,6 +9,7 @@ function [score, Feedback] = Trapezoid_Grader(filename)
 %
 % INPUTS: 
 % a filename corresponding to a student's code
+% finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 

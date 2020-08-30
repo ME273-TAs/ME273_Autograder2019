@@ -1,4 +1,4 @@
-function [Score, Feedback] = Bkwd_Deriv_Grader(filename)
+function [Score, Feedback] = Bkwd_Deriv_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: Bkwd_Deriv_Grader.m
@@ -9,6 +9,7 @@ function [Score, Feedback] = Bkwd_Deriv_Grader(filename)
 %
 % INPUTS: 
 % a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 

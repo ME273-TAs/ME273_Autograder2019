@@ -1,4 +1,4 @@
-function [Score, Feedback] = Plate_Grader(filename)
+function [Score, Feedback] = Plate_Grader(filename,finalGrade)
 %--------------------------------------------------------------
 % FILE: Plate_Grader.m
 % AUTHOR: Jared Oliphant
@@ -9,6 +9,7 @@ function [Score, Feedback] = Plate_Grader(filename)
 %
 % INPUTS:
 % a filename corresponding to a student's code
+%   finalGrade - final grading flag
 %
 %
 % OUTPUT:

@@ -1,4 +1,4 @@
-function [Score, Feedback] = Smoother_Grader(filename)
+function [Score, Feedback] = Smoother_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: Smoother_Grader.m   
@@ -13,6 +13,7 @@ function [Score, Feedback] = Smoother_Grader(filename)
 %
 % INPUTS: 
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 

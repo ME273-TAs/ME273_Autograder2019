@@ -1,4 +1,4 @@
-function [Score, Feedback] = Bisect_Grader(filename)
+function [Score, Feedback] = Bisect_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: Bisect_Grader.m   
@@ -9,6 +9,7 @@ function [Score, Feedback] = Bisect_Grader(filename)
 % 
 % INPUTS: 
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 

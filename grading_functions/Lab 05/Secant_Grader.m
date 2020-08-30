@@ -1,4 +1,4 @@
-function [Score, Feedback] = Secant_Grader(filename)
+function [Score, Feedback] = Secant_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: Secant_Grader.m   
@@ -12,6 +12,7 @@ function [Score, Feedback] = Secant_Grader(filename)
 %
 % INPUTS: 
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 
