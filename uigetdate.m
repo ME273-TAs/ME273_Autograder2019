@@ -141,7 +141,10 @@ switch varargin{2}
       set(varargin{1},'CData',geticon)
       set(findobj(gcbf,'Tag','cday'),'Userdata',get(varargin{1},'String'))
       set(findobj(gcbf,'Tag','ok'),'Enable','on')
-      try ; uicontrol(h(3)) ; end% try
+      try  
+          uicontrol(h(3)) 
+      catch
+      end% try
       return
       %
    case 'time'

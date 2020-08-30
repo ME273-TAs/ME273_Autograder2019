@@ -59,8 +59,8 @@ for i = 1:n
     
     f = submissionsTable.File{i}; % get current student's file
     
-    feedbackFlag = -1;
-    gradingAction = 0;
+    feedbackFlag = -1; %#ok<NASGU>
+    gradingAction = 0; %#ok<NASGU>
     
     % if doing manual grading
     if manualGrading.flag

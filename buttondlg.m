@@ -127,21 +127,21 @@ end
 if nargin == 1
     Title = ' ';
 end
-if nargin <= 2,
+if nargin <= 2
     Default = 'Yes';
     needsLookup = true;
 end
-if nargin == 3,
+if nargin == 3
     Default = Btn1;
 end
-if nargin <= 3,
+if nargin <= 3
     Btn1 = 'Yes';
     Btn2 = 'No';
     Btn3 = 'Cancel';
     NumButtons = 3;
     needsLookup = true;
 end
-if nargin == 4,
+if nargin == 4
     Default=Btn2;
     Btn2 = [];
     Btn3 = [];
@@ -157,9 +157,9 @@ if nargin == 6
 end
 if nargin > 6
     error(message('MATLAB:questdlg:TooManyInputs'));
-    NumButtons = 3;
+    NumButtons = 3; %#ok<UNRCH>
 end
-if isstruct(Default),
+if isstruct(Default)
     if isfield(Default,'Interpreter')                   % <-- Added
         Interpreter = Default.Interpreter;
     end                                                 % <-- Added
@@ -226,7 +226,7 @@ IconHeight =50;                                         % <-- Modified
 IconXOffset=DefOffset;
 IconYOffset=FigPos(4)-DefOffset-IconHeight;  %#ok
 if isempty(IconCMap)                                    % <-- Added
-    IconCMap=[Black;get(QuestFig,'Color')];  %#ok
+    IconCMap=[Black;get(QuestFig,'Color')];  
 end                                                     % <-- Added
 DefBtnWidth =56;
 BtnHeight   =22;
@@ -256,12 +256,12 @@ MsgTxtXOffset=IconXOffset+IconWidth;
 FigPos(3)=max(FigPos(3),MsgTxtXOffset+NumButtons*(BtnWidth+2*DefOffset));
 set(QuestFig,'Position',FigPos);
 BtnXOffset=zeros(NumButtons,1);
-if NumButtons==1,
+if NumButtons==1
     BtnXOffset=(FigPos(3)-BtnWidth)/2;
-elseif NumButtons==2,
+elseif NumButtons==2
     BtnXOffset=[MsgTxtXOffset
         FigPos(3)-DefOffset-BtnWidth];
-elseif NumButtons==3,
+elseif NumButtons==3
     BtnXOffset=[MsgTxtXOffset
         0
         FigPos(3)-DefOffset-BtnWidth];
@@ -365,7 +365,7 @@ MsgTxtXOffset=IconXOffset+IconWidth+DefOffset;
 FigPos(3)=max(NumButtons*(BtnWidth+DefOffset)+DefOffset, ...
     MsgTxtXOffset+MsgTxtWidth+DefOffset);
 % Center Vertically around icon
-if IconHeight>MsgTxtHeight,
+if IconHeight>MsgTxtHeight
     IconYOffset=BtnYOffset+BtnHeight+DefOffset;
     MsgTxtYOffset=IconYOffset+(IconHeight-MsgTxtHeight)/2;
     FigPos(4)=IconYOffset+IconHeight+DefOffset;
@@ -375,14 +375,14 @@ else
     IconYOffset=MsgTxtYOffset+(MsgTxtHeight-IconHeight)/2;
     FigPos(4)=MsgTxtYOffset+MsgTxtHeight+DefOffset;
 end
-if NumButtons==1,
+if NumButtons==1
     BtnXOffset=(FigPos(3)-BtnWidth)/2;
-elseif NumButtons==2,
+elseif NumButtons==2
     BtnXOffset=[(FigPos(3)-DefOffset)/2-BtnWidth
         (FigPos(3)+DefOffset)/2
         ];
     
-elseif NumButtons==3,
+elseif NumButtons==3
     BtnXOffset(2)=(FigPos(3)-BtnWidth)/2;
     BtnXOffset=[BtnXOffset(2)-DefOffset-BtnWidth
         BtnXOffset(2)
@@ -604,7 +604,7 @@ end
             % Call the setDefaultButton method on the figure handle
             fh.setDefaultButton(btnH);
         end
-        function useHGDefaultButton(figHandle, btnHandle)
+        function useHGDefaultButton(figHandle, btnHandle) %#ok<INUSL>
             % First get the position of the button.
             btnPos = getpixelposition(btnHandle);
             % Next calculate offsets.

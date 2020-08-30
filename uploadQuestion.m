@@ -26,7 +26,7 @@ function uploadQuestion(questionType)
 %==============================================END-HEADER======
 
 % select question and title
-question = '';
+question = ''; %#ok<*NASGU>
 title = '';
 
 switch questionType

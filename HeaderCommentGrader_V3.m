@@ -45,7 +45,6 @@ function [HeaderScore, HeaderFeedback, CommentScore, CommentFeedback, error] = H
 
 
 % DEFAULT OUTPUT VALUES
-error = 0;
 HeaderScore = NaN;
 HeaderFeedback = '';
 CommentScore = NaN;
@@ -69,10 +68,10 @@ try                             % TRY structure used to catch errors
         tline = fgetl(f);       % get a line of text
         if tline == -1          % if the end of file is reached, BREAK
             break
-        elseif length(tline)==0 % loop around if the line contains nothing
+        elseif isempty(tline) % loop around if the line contains nothing
             continue
         else 
-            content{i,1} = strtrim(tline);  % trim out inital and ending space characters
+            content{i,1} = strtrim(tline);  %#ok<AGROW> % trim out inital and ending space characters
         end
 
         i = i + 1;              % increment i
@@ -123,7 +122,7 @@ try                             % TRY structure used to catch errors
         if length(content{i}) > 2       % check that each line has at least 3 characters (otherwise it will be ignored)
             n = length(content{i});     % the number of characters in this line                
             comdex = find(content{i} == '%',1);     % comdex: the index of the comment character
-            if length(comdex)>0                     % if comdex is nonempty it will have a length > 0, and thus no comment character was found
+            if ~isempty(comdex)                  % if comdex is nonempty it will have a length > 0, and thus no comment character was found
                 commentsum = commentsum + n-comdex; % number of characters following the %
                 commentlines = commentlines + 1;    % number of lines with comments
             end
@@ -200,7 +199,7 @@ try                             % TRY structure used to catch errors
 
 
 catch ERR
-    ERR
+    disp(ERR)
     try
         fclose(f);     % close the file that was opened in case the file is still open (will cause issues if left open when trying to move/rename)
     catch

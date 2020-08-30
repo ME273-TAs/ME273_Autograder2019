@@ -1,4 +1,4 @@
-function masterTable = lab_grader(labNum, partTables, configVars)
+function masterTable = lab_grader(labNum, partTables, configVars) %#ok<INUSL>
 %============================================BEGIN-HEADER=====
 % FILE: lab_grader.m
 % AUTHOR: Caleb Groves

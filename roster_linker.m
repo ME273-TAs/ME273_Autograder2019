@@ -128,7 +128,7 @@ for i = 1:m
             % if CourseID's match (student match)
             if rosterTable.CourseID(i) == prevGraded.CourseID{j}
                 % set match flag
-                match = 1;
+                match = 1; %#ok<NASGU>
                 % When some changes are made to graded csv occasionally the
                 % year will shift to 2000 years ago. This checks to make
                 % sure the dates here are within the last two millenia
