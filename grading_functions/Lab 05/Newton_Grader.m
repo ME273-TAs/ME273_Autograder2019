@@ -92,9 +92,9 @@ catch ERROR
     
     %==============================================================
     % Zero score if the code doesn't run:
-    Score = 0      % give score of 0
+    Score = 0;      % give score of 0
     % An explanation of the zero score and the MATLAB error message.
-    Feedback = regexprep(ERROR.message,'\n',' ')
+    Feedback = regexprep(ERROR.message,'\n',' ');
     %==============================================================
     
     

@@ -27,7 +27,7 @@ try
     
     % FILENAME TRUNCATED and stored in the variable f.
     %=================================================| 
-    StudentFunction = filename(1:end-2)    % get function name     |
+    StudentFunction = filename(1:end-2);    % get function name     |
     %=================================================
     %=================================================
     % PLACE HARD-CODED REFERENCE SOLUTION CODE HERE

@@ -39,7 +39,6 @@ score = [num2str(configVars.weights.code),'*RC[1]+',num2str(configVars.weights.h
 % penalty for late instead of 80% -Jared Oliphant 1/22/2019
 % see also 'dynamicToStatic.m' and 'configAutograder.m' and
 % 'gradingLogic.m'
-score_text = ['=IF(RC[-1]=1,IF(',score,'>=',num2str(configVars.weights.latePenalty), ...
-    ',',num2str(configVars.weights.latePenalty),',',score,'),',score,')'];
+score_text = ['=',score];
 
 end % end of function
