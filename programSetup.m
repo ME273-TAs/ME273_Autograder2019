@@ -112,7 +112,9 @@ uploadFile = fullfile(labPath,'ME273LabFeedback.csv');
 writetable(LSmaster, uploadFile);
 
 % Confirm that uploads to learning suite and gmail have been completed
-uploadQuestion(1);
+if finalGrade
+    uploadQuestion(1);
+end
 uploadQuestion(2);
 
 % flip feedback flags

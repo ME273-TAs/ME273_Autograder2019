@@ -172,7 +172,7 @@ for i = 1:m
     for j = 1:n
         % parse CourseID from filename
         if submissionsTable(j).name(1) == '.'
-            % Empty File Found, skip this file
+            % Hidden File Found, skip this file
         else
             submissionID = parseCourseID(submissionsTable(j).name);
             
