@@ -1,5 +1,5 @@
 function linkedTable = roster_linker(currentLab, submissionsTable, roster, ...
-    partName, configVars, regrading, manualGrading, pseudoDate, varargin)
+    partName, configVars, finalGrading, manualGrading, pseudoDate, varargin)
 
 %============================================BEGIN-HEADER=====
 % FILE: roster_linker.m
@@ -164,40 +164,45 @@ for i = 1:m
     
     % Choose which deadline to use as current
     rosterTable.CurrentDeadline{i} = rosterTable.FirstDeadline{i};
-    if regrading
-        rosterTable.CurrentDeadline{i} = rosterTable.FinalDeadline{i};
+    if finalGrading
+        rosterTable.CurrentDeadline{i} = rosterTable.FirstDeadline{i};
     end
     
     % Go through each row in the submissions table
     for j = 1:n
         % parse CourseID from filename
-        submissionID = parseCourseID(submissionsTable(j).name);
-        
-        if rosterTable.CourseID(i) == submissionID % student match
-            % Check to see if submission file should replace current file
-            f = rosterTable.File{i};
+        if submissionsTable(j).name(1) == '.'
+            % Empty File Found, skip this file
+        else
+            submissionID = parseCourseID(submissionsTable(j).name);
             
-            d = datetime(submissionsTable(j).date); 
-
-            % if the submission date is before the current deadline and it
-            % was submitted before the pseudodate ("now")
-            if (~manualGrading.flag && ...
-                    d <= pseudoDate) || manualGrading.flag
+            if rosterTable.CourseID(i) == submissionID % student match
+                % Check to see if submission file should replace current file
+                f = rosterTable.File{i};
                 
-                % if there exists a current file for this student and the
-                % submission date is newer than the current file's date OR
-                % if there's no file with this student at all
-                if (isstruct(f) && d > f.date) || ~isstruct(f)
+                d = datetime(submissionsTable(j).date);
+                
+                % if the submission date is before the current deadline and it
+                % was submitted before the pseudodate ("now")
+                if (~manualGrading.flag && ...
+                        d <= rosterTable.CurrentDeadline{i} && ...
+                        d <= pseudoDate) || manualGrading.flag
                     
-                    % rename file and assign to student
-                    rosterTable.File{i} = rename_file(...
-                        submissionsTable(j), partName, currentLab.language);
-                    rosterTable.GoogleTag{i} = getGoogleTag(...
-                        submissionsTable(j).name);
-                end
-            end % before current deadline check
-            
-        end % course ID check
+                    % if there exists a current file for this student and the
+                    % submission date is newer than the current file's date OR
+                    % if there's no file with this student at all
+                    if (isstruct(f) && d > f.date) || ~isstruct(f)
+                        
+                        % rename file and assign to student
+                        rosterTable.File{i} = rename_file(...
+                            submissionsTable(j), partName, currentLab.language);
+                        rosterTable.GoogleTag{i} = getGoogleTag(...
+                            submissionsTable(j).name);
+                    end
+                end % before current deadline check
+                
+            end % course ID check
+        end
     end % next submission
                     
 end % roster loop
