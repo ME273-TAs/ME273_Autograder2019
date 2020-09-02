@@ -29,7 +29,7 @@ try
     f = filename(1:end-2); % get function name
     
     % Input Data and solution for testing student code
-    x = [0,1,3,6,7,7.25,8,10,12,12.1,13];
+    x = [0,1,3,6,7,7.25,8,10,12,12.1,13]; %#ok<*NASGU>
     y = [0 1 0 2 0 3 0 4 0 5 0];    % A sawtooth function with increasing height.
     Solution = [17.5];   % Obtained by trapz(x,y)
     

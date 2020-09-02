@@ -32,9 +32,15 @@ function [score, Feedback] = Trapezoid_Grader(filename,finalGrade)
         %save('gradingvars.mat'); % CALEB - I may be wrong, but I don't think we need this for functions.
 
         % Input Data and solution for testing student code
-        x = 0:1:10;
-        y = [0 1 0 2 0 3 0 4 0 5 0];    % A sawtooth function with increasing height.
-        Solution = [15];   % Obtained by sum(y) 
+        if finalGrade
+            x = 3:1:13;
+            y = [0 2 0 4 0 8 0 4 0 2 0];    % A sawtooth function with increasing height.
+            Solution = [20];   %#ok<*NBRAK> % Obtained by sum(y)
+        else
+            x = 0:1:10; %#ok<*NASGU>
+            y = [0 1 0 2 0 3 0 4 0 5 0];    % A sawtooth function with increasing height.
+            Solution = [15];   % Obtained by sum(y)
+        end
         
         % Call student code---------------------------------------------------------- 
         eval(['[I] = ',f,'(x,y);'])    % evaluate the function
@@ -44,10 +50,18 @@ function [score, Feedback] = Trapezoid_Grader(filename,finalGrade)
         
         if length(I) == 1
             score = 1 - abs((I-Solution)/Solution);
-            if I < 14.9 | I > 15.1
-                Feedback = ['The test function has an integral of 15. Your code produced: ',num2str(I)];
+            if finalGrade
+                if I < (Solution - 0.1) || I > (Solution + 0.1)
+                    Feedback = ['Your code produced an answer with a percent error of ', num2str((1-score)*100), '%'];
+                else
+                    Feedback = 'Your code calculated the correct value of the integral';
+                end
             else
-                Feedback = ' ';
+                if I < (Solution - 0.1) || I > (Solution + 0.1)
+                    Feedback = ['The test function has an integral of ', num2str(Solution),'. Your code produced: ',num2str(I)];
+                else
+                    Feedback = 'Your code calculated the correct value of the integral';
+                end
             end
         else
             score = 0;
