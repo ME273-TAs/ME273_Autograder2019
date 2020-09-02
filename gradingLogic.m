@@ -63,7 +63,11 @@ if isstruct(File) % filter students that haven't submitted
             feedbackFlag = 1;
         else % if the program is not running in finalGrading mode
             if numSubmissions < chances % if the student has not exceeded feedback limitations
-                if datetime(File.date,'Format','MM/dd/uuuu HH:mm') > datetime(lastSubDate,'InputFormat','MM/dd/uuuu HH:mm') % if a new file has been uploaded since last time
+                newFileDate = datetime(File.date,'Format','MM/dd/uuuu HH:mm');
+                newFileDate.Second = 0;
+                oldFileDate = datetime(lastSubDate,'InputFormat','MM/dd/uuuu HH:mm');
+                oldFileDate.Second = 0;
+                if newFileDate > oldFileDate % if a new file has been uploaded since last time
                     gradingAction = 1;
                     feedbackFlag = OldFeedbackFlag;
                     numSubmissions = numSubmissions + 1;
