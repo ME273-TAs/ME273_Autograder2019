@@ -1,4 +1,4 @@
-function [Score, Feedback] = Art_Grader(filename)
+function [Score, Feedback] = Art_Grader(filename,finalGrade)
 %--------------------------------------------------------------
 % FILE:  Art_Grader.m 
 % AUTHOR: Jared Oliphant
@@ -9,6 +9,7 @@ function [Score, Feedback] = Art_Grader(filename)
 %
 % INPUTS:
 % a filename corresponding to a student's code
+%   finalGrade - final grading flag
 %
 %
 % OUTPUT:

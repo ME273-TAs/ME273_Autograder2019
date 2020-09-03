@@ -1,4 +1,4 @@
-function [Score, Feedback] = ImageRecon_Grader(filename)
+function [Score, Feedback] = ImageRecon_Grader(filename,finalGrade)
 %--------------------------------------------------------------
 % FILE: ImageRecon_Grader.m
 % AUTHOR: Jared Oliphant
@@ -8,6 +8,7 @@ function [Score, Feedback] = ImageRecon_Grader(filename)
 %
 % INPUTS:
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 %
 %
 % OUTPUT:

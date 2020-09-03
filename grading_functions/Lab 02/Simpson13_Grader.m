@@ -1,4 +1,4 @@
-function [score, Feedback] = Simpson13_Grader(filename)
+function [score, Feedback] = Simpson13_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: Simpson13_Grader.m
@@ -9,6 +9,7 @@ function [score, Feedback] = Simpson13_Grader(filename)
 %
 % INPUTS: 
 % a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 

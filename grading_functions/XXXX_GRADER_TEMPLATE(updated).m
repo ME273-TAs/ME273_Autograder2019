@@ -1,4 +1,4 @@
-function [Score, Feedback] = XXXXXX_Grader(filename)
+function [Score, Feedback] = XXXXXX_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: XXXXXXX_Grader.m    ------ replace XXXXX with the leading name of the student submission file --------
@@ -9,6 +9,7 @@ function [Score, Feedback] = XXXXXX_Grader(filename)
 %
 % INPUTS: 
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 

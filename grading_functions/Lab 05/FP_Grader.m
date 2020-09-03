@@ -1,4 +1,4 @@
-function [Score, Feedback] = FP_Grader(filename)
+function [Score, Feedback] = FP_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: FP_Grader.m   
@@ -9,6 +9,7 @@ function [Score, Feedback] = FP_Grader(filename)
 %
 % INPUTS: 
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 
@@ -27,7 +28,7 @@ try
     
     % FILENAME TRUNCATED and stored in the variable f.
     %=================================================| 
-    StudentFunction = filename(1:end-2)    % get function name     |
+    StudentFunction = filename(1:end-2);    % get function name     |
     %=================================================
     %=================================================
     % PLACE HARD-CODED REFERENCE SOLUTION CODE HERE
