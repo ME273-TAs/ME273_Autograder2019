@@ -9,17 +9,19 @@ classdef Lab < handle
         numParts
         dueDate
         language  % character array 'MATLAB' or 'C++'
+        chances
     end
     
     methods
         % Constructor - called when you create an instance of this class.
-        function self = Lab(num, dueDate, language)
+        function self = Lab(num, dueDate, language, chances)
             % initialize the lab number
             self.num = num;
             % Initialize with no lab parts/subassignments
             self.numParts = 0;
             self.dueDate = dueDate;
 	    self.language = language; 
+        self.chances = chances;
         end
         
         % Function for adding a lab part/subassignment to this lab.

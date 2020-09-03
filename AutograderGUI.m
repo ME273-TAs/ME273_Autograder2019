@@ -38,7 +38,7 @@ classdef AutograderGUI < handle
             set(self.fig, 'ToolBar', 'none');
             % make a few custom menu bar items
             help = uimenu(self.fig,'Text','&Help');
-            about = uimenu(self.fig,'Text','&About');
+            about = uimenu(self.fig,'Text','&About'); %#ok<NASGU>
             
             % declares the text of each menu item and the callback function
             % asscoiated. 
@@ -47,17 +47,17 @@ classdef AutograderGUI < handle
             uimenu(help,'Text','&C++ Grading','MenuSelectedFcn',@Menu3Selected);
             uimenu(help,'Text','&Troublshooting','MenuSelectedFcn',@Menu4Selected);
             
-            function Menu1Selected(src,event)
+            function Menu1Selected(src,event) %#ok<*INUSD>
                 web("https://github.com/cgrooves/ME273_Autograder/blob/master/README.md")
             end
             function Menu2Selected(src,event)
-                '2'
+                '2';
             end
             function Menu3Selected(src,event)
-                '3'
+                '3';
             end
             function Menu4Selected(src,event)
-                '4'
+                '4';
             end
             
             
@@ -77,7 +77,7 @@ classdef AutograderGUI < handle
             end
             
             % create dummy directory
-            if ~isdir('dummy')
+            if ~isfolder('dummy')
                 mkdir('dummy');
             end
             
@@ -129,11 +129,11 @@ classdef AutograderGUI < handle
             'Grading Options', 'Position', [.1 .25 .8 .25]);
 
             gui.grading_opts.original_grading = uicontrol(gui.grading_opts.panel,...
-            'Style', 'radiobutton', 'String','Original','Units','Normalized',...
+            'Style', 'radiobutton', 'String','Feedback Grading','Units','Normalized',...
             'Position',[.1 .8 .8 .1], 'Value', 1);
 
             gui.grading_opts.resubmission_grading = uicontrol(gui.grading_opts.panel,...
-            'Style', 'radiobutton', 'String','Resubmission','Units','Normalized',...
+            'Style', 'radiobutton', 'String','Final Grading','Units','Normalized',...
             'Position',[.1 .6 .8 .1], 'Value', 0);
 
             gui.grading_opts.manual = uicontrol(gui.grading_opts.panel,...
@@ -161,7 +161,7 @@ classdef AutograderGUI < handle
         function updatePartMger(self,hObject,~)
             % get the selected lab number
             idx = hObject.Value;
-            labNum = str2num(hObject.String(idx,:));
+            labNum = str2num(hObject.String(idx,:)); %#ok<ST2NM>
             
             % get that lab from the labs list
             self.currentLab = self.labsList.getLab(labNum);
@@ -239,7 +239,7 @@ classdef AutograderGUI < handle
             
             % Get dates from edit boxes
             try
-                dueDate = datetime(self.settingsGUI.due_date.edit.String);
+                dueDate = datetime(self.settingsGUI.due_date.edit.String); %#ok<NASGU>
                 pseudoDate = datetime(self.settingsGUI.pseudo_date.edit.String);
             catch % if it failed, assume a formatting error
                 errordlg(['One of the dates is formatted incorrectly. ',...
@@ -253,11 +253,11 @@ classdef AutograderGUI < handle
             roster.path = '';
             
             % regrading and manual grading
-            regrade = self.settingsGUI.grading_opts.resubmission_grading.Value;
+            finalGrade = self.settingsGUI.grading_opts.resubmission_grading.Value;
             manual.flag = self.settingsGUI.grading_opts.manual.Value;
             manual.feedbackFlag = 2;
             
-            if regrade
+            if finalGrade
                 manual.gradingAction = 3;
             else
                 manual.gradingAction = 1;
@@ -276,7 +276,7 @@ classdef AutograderGUI < handle
                     self.labPartsGUI.parts{i}.sub.edit.String;
                 
                 % show an error if the submissions directory is blank
-                if ~isdir(labParts{i}.submissionsDir)
+                if ~isfolder(labParts{i}.submissionsDir)
                     uiwait(msgbox(['There must be a submissions directory ',...
                         'for lab subassignment ',labParts{i}.name,...
                         ' or the box ''None'' must be ',...
@@ -309,7 +309,7 @@ classdef AutograderGUI < handle
             end
             
             % Call programSetup            
-            programSetup(self.currentLab, labParts, roster, regrade, manual, pseudoDate);
+            programSetup(self.currentLab, labParts, roster, finalGrade, manual, pseudoDate);
             
             % show finished message
             uiwait(msgbox(['Lab ',num2str(labNum),' grading complete!'],...

@@ -1,8 +1,10 @@
 #don't track the student roster
 roster.csv
 ._*.m
+._*
 *DS_Store
-
+parameters.mat
+*.m~auto
 
 # no need to track the grading_directory/
 grading_directory/

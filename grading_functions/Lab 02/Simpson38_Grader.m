@@ -1,4 +1,4 @@
-    function [score, Feedback] = Simpson38_Grader(filename)
+    function [score, Feedback] = Simpson38_Grader(filename,finalGrade)
 
     %--------------------------------------------------------------
     % FILE: Simpson38_Grader.m
@@ -10,6 +10,7 @@
     %
     % INPUTS:
     % a filename corresponding to a student's code
+    %   finalGrade - final grading flag
     %
     %
     % OUTPUT:

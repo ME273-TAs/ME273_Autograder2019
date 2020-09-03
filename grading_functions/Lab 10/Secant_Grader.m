@@ -1,4 +1,4 @@
-function [Score, Feedback] = Secant_Grader(filename)
+function [Score, Feedback] = Secant_Grader(filename,finalGrade)
 %--------------------------------------------------------------
 % FILE: Secant_Grader.m (FOR C++ VERSION OF THIS ASSIGNMENT)
 % AUTHOR: Jared Oliphant
@@ -10,6 +10,7 @@ function [Score, Feedback] = Secant_Grader(filename)
 %
 % INPUTS:
 % a filename corresponding to a student's code
+%   finalGrade - final grading flag
 %
 %
 % OUTPUT:

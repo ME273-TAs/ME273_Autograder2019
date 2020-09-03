@@ -1,4 +1,4 @@
-function [Score, Feedback] = Bisect_Grader(filename)
+function [Score, Feedback] = Bisect_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: Bisect_Grader.m   
@@ -9,6 +9,7 @@ function [Score, Feedback] = Bisect_Grader(filename)
 % 
 % INPUTS: 
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 
@@ -75,7 +76,7 @@ try
         % They found a root but it wasn't the one I was looking for
         if Stud_yr < tol && abs(Stud_xr - Solution_xr) > .1
             Feedback = ['It''s likely that you reintialized the Random_Function_01 inside your function   ',...
-                Feedback]
+                Feedback];
         end
     end
     

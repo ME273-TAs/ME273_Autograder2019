@@ -1,4 +1,4 @@
-function [Score, Feedback] = SpeedyV_Grader(filename)
+function [Score, Feedback] = SpeedyV_Grader(filename, finalGrade)
 
 %--------------------------------------------------------------
 % FILE: SpeedyV_Grader.m   
@@ -10,6 +10,7 @@ function [Score, Feedback] = SpeedyV_Grader(filename)
 % 
 % INPUTS: 
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 % 
 % 
 % OUTPUT: 

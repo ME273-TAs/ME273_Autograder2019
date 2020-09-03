@@ -26,7 +26,7 @@ function uploadQuestion(questionType)
 %==============================================END-HEADER======
 
 % select question and title
-question = '';
+question = ''; %#ok<*NASGU>
 title = '';
 
 switch questionType
@@ -34,7 +34,7 @@ switch questionType
         question = 'grades to Learning Suite?';
         title = 'Learning Suite';
     case 2
-        question = 'to Google Drive and sent out feedback?';
+        question = 'to Google Drive and updated the feedback spreadsheet?';
         title = 'Gmail Feedback';
     otherwise
         error('Unknown questionType');

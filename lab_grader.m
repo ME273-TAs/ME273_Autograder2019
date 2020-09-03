@@ -1,4 +1,4 @@
-function masterTable = lab_grader(labNum, partTables, configVars)
+function masterTable = lab_grader(labNum, partTables, configVars) %#ok<INUSL>
 %============================================BEGIN-HEADER=====
 % FILE: lab_grader.m
 % AUTHOR: Caleb Groves
@@ -148,11 +148,12 @@ for i = 1:n
         % get starting column for front fields
         s = configVars.studentFields.l + (i-1)*configVars.partFields.pf; 
         masterArray{r,s} = part.PartName{j};
-        masterArray{r,s+1} = part.Late(j);
-        masterArray{r, s+2} = part.Score(j);
-        masterArray{r,s+3} = part.CodeScore(j);
-        masterArray{r,s+4} = part.HeaderScore(j);
-        masterArray{r,s+5} = part.CommentScore(j);
+        masterArray{r,s+1} = part.NumSub(j);
+        masterArray{r,s+2} = part.LastSubmit(j);
+        masterArray{r, s+3} = part.Score(j);
+        masterArray{r,s+4} = part.CodeScore(j);
+        masterArray{r,s+5} = part.HeaderScore(j);
+        masterArray{r,s+6} = part.CommentScore(j);
         
         % Backend Fields (feedback)
         s = t - (n - i + 1)*configVars.partFields.pb; % get starting col for back fields

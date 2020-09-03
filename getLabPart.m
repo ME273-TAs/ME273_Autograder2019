@@ -65,7 +65,8 @@ end
 % Copy over the columns for code, header, and comment scores and feedback.
 % Get the pertinent column indices
 feedbackFlagCol = configVars.studentFields.FeedbackFlag;
-lateCol = r + configVars.partFields.LateOffset;
+lateCol = r + configVars.partFields.SubNumOffset;
+subDate = r + configVars.partFields.LastSubOffset;
 codeCol = r + configVars.partFields.CodeScoreOffset;
 headerCol = r + configVars.partFields.HeaderScoreOffset;
 commentCol = r + configVars.partFields.CommentScoreOffset;
@@ -77,6 +78,7 @@ commentFBCol = n - (p-j)*configVars.partFields.pb + configVars.partFields.Commen
 % Copy over the columns into the output table
 prevGraded.FeedbackFlag = gradedArray(:,feedbackFlagCol);
 prevGraded.Late = gradedArray(:,lateCol);
+prevGraded.SubDate = gradedArray(:,subDate);
 prevGraded.CodeScore = gradedArray(:,codeCol);
 prevGraded.HeaderScore = gradedArray(:,headerCol);
 prevGraded.CommentScore = gradedArray(:,commentCol);

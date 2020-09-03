@@ -1,4 +1,4 @@
-function [Score, Feedback] = Newton_Grader(filename)
+function [Score, Feedback] = Newton_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: Newton_Grader.m
@@ -10,6 +10,7 @@ function [Score, Feedback] = Newton_Grader(filename)
 %
 % INPUTS:
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 %
 %
 % OUTPUT:
@@ -92,9 +93,9 @@ catch ERROR
     
     %==============================================================
     % Zero score if the code doesn't run:
-    Score = 0      % give score of 0
+    Score = 0;      % give score of 0
     % An explanation of the zero score and the MATLAB error message.
-    Feedback = regexprep(ERROR.message,'\n',' ')
+    Feedback = regexprep(ERROR.message,'\n',' ');
     %==============================================================
     
     

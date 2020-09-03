@@ -1,4 +1,4 @@
-function [Score, Feedback] = FP_Grader(filename)
+function [Score, Feedback] = FP_Grader(filename,finalGrade)
 %--------------------------------------------------------------
 % FILE: FP_Grader.m (FOR C++ VERSION OF THIS ASSIGNMENT)
 % AUTHOR: Jared Oliphant
@@ -10,6 +10,7 @@ function [Score, Feedback] = FP_Grader(filename)
 %
 % INPUTS:
 % a filename corresponding to a student's code
+%   finalGrade - final grading flag
 %
 %
 % OUTPUT:

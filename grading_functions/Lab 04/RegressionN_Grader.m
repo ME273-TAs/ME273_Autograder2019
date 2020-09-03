@@ -1,4 +1,4 @@
-function [Score, Feedback] = RegressionN_Grader(filename)
+function [Score, Feedback] = RegressionN_Grader(filename,finalGrade)
 
 %--------------------------------------------------------------
 % FILE: RegressionN_Grader.m
@@ -15,6 +15,7 @@ function [Score, Feedback] = RegressionN_Grader(filename)
 %
 % INPUTS:
 %   filename - a filename corresponding to a student's code
+%   finalGrade - final grading flag
 %
 %
 % OUTPUT:
