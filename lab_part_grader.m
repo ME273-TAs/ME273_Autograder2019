@@ -115,7 +115,14 @@ for i = 1:n
             configVars.weights.header*headerScore + ...
             configVars.weights.comments*commentScore;
         submissionsTable.CodeScore(i) = codeScore;
-        submissionsTable.CodeFeedback{i} = codeFeedback;
+        if finalGrading
+            submissionsTable.CodeFeedback{i} = ['Final Feedback: ',...
+                codeFeedback,' | ',submissionsTable.CodeFeedback{i}];
+        else
+            submissionsTable.CodeFeedback{i} = ['Submission ',...
+                num2str(submissionsTable.NumSub(i)),' Feedback: ',...
+                codeFeedback,' | ',submissionsTable.CodeFeedback{i}];
+        end
         submissionsTable.HeaderScore(i) = headerScore;
         submissionsTable.HeaderFeedback{i} = headerFeedback;
         submissionsTable.CommentScore(i) = commentScore;
