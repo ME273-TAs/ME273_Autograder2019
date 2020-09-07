@@ -43,9 +43,9 @@ function L = labSetupFile()
 L = LabsList();
 
 % Lab 1
-L.addLab(1,datetime(2019,9,14,16,0,0),'MATLAB',2);            % the integers a unique integer identifier - could be negative or strange numbers for test labs
+L.addLab(1,datetime(2020,9,07,16,0,0),'MATLAB',2);            % the integers a unique integer identifier - could be negative or strange numbers for test labs
 L.addLabPart('Rect',fullfile('Lab 01','Rect_Grader.m'));              % This approach will bring up the "Lab 01" subfolder in the GUI. 
-L.addLabPart('Trapezoid',fullfile('Lab 01','Trapezoid_Grader.m'));    % ditto
+%L.addLabPart('Trapezoid',fullfile('Lab 01','Trapezoid_Grader.m'));    % ditto
 
 % Lab 2
 L.addLab(2,datetime(2019,9,21,16,0,0),'MATLAB',2);        % the integer value is usedeger identifier - could be negative or strange numbers for test labs

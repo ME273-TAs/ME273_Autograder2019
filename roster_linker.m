@@ -135,7 +135,9 @@ for i = 1:m
                 if prevGraded.FirstDeadline{j}.Year < 2010
                     prevGraded.FirstDeadline{j}.Year = datetime('now').Year;
                     prevGraded.FinalDeadline{j}.Year = datetime('now').Year;
-                    prevGraded.SubDate{j}.Year = datetime('now').Year;
+                    if isdatetime(prevGraded.SubDate{j}) 
+                        prevGraded.SubDate{j}.Year = datetime('now').Year;
+                    end
                 end
                 % copy over old student information 
                 rosterTable.FirstDeadline{i} = ...
