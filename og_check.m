@@ -8,12 +8,15 @@ function [] = og_check(currentLab,f,filename)
 % PURPOSE: Fill a separate directory with student's submitted code to be
 %   uploaded to SimiCheck for an analysis of who is copying who
 %
-% INPUTS:
+% INPUTS:   currentLab - structure containing the current lab number
+%           f - information about the file currently being graded
+%           filename - easily accessed filename from f
 %
-% OUTPUTS:
+% OUTPUTS:  none - files are copied over to a new directory
 %
 %
-% NOTES:
+% NOTES:    any files already in the directory that have the same filename
+%           as the file passed in will be deleted
 %
 % VERSION HISTORY TRACKED WITH GIT
 %
@@ -46,6 +49,3 @@ end
 
 % Copy the file over
 copyfile(oldfile,newfile)
-
-
-% uploadFile = '../GradedLabs/Lab1Graded/ME273LabFeedback.csv'
