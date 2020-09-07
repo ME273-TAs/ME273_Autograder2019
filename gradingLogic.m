@@ -65,14 +65,14 @@ if isstruct(File) % filter students that haven't submitted
             gradingAction = 3;
             feedbackFlag = 1;
             numSubmissions = numSubmissions + 10; %preserve record of...
-                % how many submissions student used by adding 10
+            % how many submissions student used by adding 10
         else % if the program is not running in finalGrading mode
             if numSubmissions < chances % if the student has not exceeded feedback limitations
                 newFileDate = datetime(File.date,'Format','MM/dd/uuuu HH:mm');
                 newFileDate.Second = 0;
                 try
-                oldFileDate = datetime(lastSubDate,'InputFormat','MM/dd/uuuu HH:mm');
-                oldFileDate.Second = 0;
+                    oldFileDate = datetime(lastSubDate,'InputFormat','MM/dd/uuuu HH:mm');
+                    oldFileDate.Second = 0;
                 catch
                     oldFileDate = datetime([2000,1,1,0,0,0]);
                 end
@@ -96,11 +96,21 @@ if isstruct(File) % filter students that haven't submitted
 else % if no file was submitted
     if OldScore == 0
         gradingAction = 4; % no-submit, 1st warning
-        feedbackFlag = OldFeedbackFlag;
-        numSubmissions = 0;
+        if finalGrading && (pseudoDate > FirstDeadline) && numSubmissions < 10
+            feedbackFlag = 1;
+            numSubmissions = 10;
+        else
+            feedbackFlag = OldFeedbackFlag;
+            numSubmissions = 0;
+        end
     elseif OldScore ~= 0
         gradingAction = 2; % copy over the old scores and feedback
-        feedbackFlag = OldFeedbackFlag;
+        if finalGrading && (pseudoDate > FirstDeadline) && numSubmissions < 10
+            feedbackFlag = 1;
+            numSubmissions = numSubmissions + 10;
+        else
+            feedbackFlag = OldFeedbackFlag;
+        end
     end
     
 end
