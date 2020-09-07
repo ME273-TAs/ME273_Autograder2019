@@ -1,5 +1,5 @@
 function [feedbackFlag, gradingAction, numSubmissions] = gradingLogic(File, ...
-    ~, numSubmissions, lastSubDate, OldFeedbackFlag, OldScore, ~, ...
+    ~, numSubmissions, lastSubDate, OldFeedbackFlag, OldScore, pseudoDate, ...
     finalGrading, ~, FirstDeadline, chances)
 %============================================BEGIN-HEADER=====
 % FILE: gradingLogic.m
@@ -57,10 +57,15 @@ end
 
 if isstruct(File) % filter students that haven't submitted
     if datetime(File.date) <= FirstDeadline % make sure file was submitted before deadline
-        if finalGrading
-            % if the grader is in finalGrading mode, set grading action
+        if finalGrading && (pseudoDate > FirstDeadline)...
+                && numSubmissions < 10
+            % if the grader is in finalGrading mode, the deadline has...
+            % past, and finalGrading has not already occured for this...
+            % student, set grading action
             gradingAction = 3;
             feedbackFlag = 1;
+            numSubmissions = numSubmissions + 10; %preserve record of...
+                % how many submissions student used by adding 10
         else % if the program is not running in finalGrading mode
             if numSubmissions < chances % if the student has not exceeded feedback limitations
                 newFileDate = datetime(File.date,'Format','MM/dd/uuuu HH:mm');
@@ -69,7 +74,7 @@ if isstruct(File) % filter students that haven't submitted
                 oldFileDate = datetime(lastSubDate,'InputFormat','MM/dd/uuuu HH:mm');
                 oldFileDate.Second = 0;
                 catch
-                    oldFileDate = datetime('now') - 7000;
+                    oldFileDate = datetime([2000,1,1,0,0,0]);
                 end
                 if newFileDate > oldFileDate % if a new file has been uploaded since last time
                     gradingAction = 1;
