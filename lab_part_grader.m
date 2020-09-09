@@ -120,11 +120,11 @@ for i = 1:n
         submissionsTable.CodeScore(i) = codeScore;
         if finalGrading
             submissionsTable.CodeFeedback{i} = ['Final Feedback: ',...
-                codeFeedback,' | ',submissionsTable.CodeFeedback{i}];
+                codeFeedback,' | ',submissionsTable.OldCodeFeedback{i}];
         else
             submissionsTable.CodeFeedback{i} = ['Submission ',...
                 num2str(submissionsTable.NumSub(i)),' Feedback: ',...
-                codeFeedback,' | ',submissionsTable.CodeFeedback{i}];
+                codeFeedback,' | ',submissionsTable.OldCodeFeedback{i}];
         end
         submissionsTable.HeaderScore(i) = headerScore;
         submissionsTable.HeaderFeedback{i} = headerFeedback;
