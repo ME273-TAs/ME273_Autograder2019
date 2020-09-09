@@ -78,7 +78,7 @@ L.addLabPart('Rect',fullfile('Lab 01','Rect_Grader.m'));              % This app
 %L.addLabPart('Trapezoid',fullfile('Lab 01','Trapezoid_Grader.m'));  %This part was removed from lab 1 as of Fall 2020
 
 % Lab 2
-L.addLab(2,datetime(2019,9,21,16,0,0),'MATLAB',2);
+L.addLab(2,datetime(2020,9,14,16,0,0),'MATLAB',2);
 L.addLabPart('Trapezoid',fullfile('Lab 02','Trapezoid_Grader.m'));
 L.addLabPart('Simpson13',fullfile('Lab 02','Simpson13_Grader.m'));
 L.addLabPart('Simpson38',fullfile('Lab 02','Simpson38_Grader.m'));
