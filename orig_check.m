@@ -1,7 +1,7 @@
-function [] = og_check(currentLab,f,filename)
+function [] = orig_check(currentLab,f,filename)
 
 %============================================BEGIN-HEADER=====
-% FILE: og_check.m
+% FILE: orig_check.m
 % AUTHOR: Jared Hale
 % DATE: 7 Sep 2020
 %

@@ -111,7 +111,7 @@ for i = 1:n
                 HeaderCommentGrader_Cplusplus(filename);
         end
         if gradingAction == 3
-            og_check(currentLab,f,filename)
+            orig_check(currentLab,f,filename)
         end
         % Tack on score and feedback for each
         submissionsTable.Score(i) = configVars.weights.code*codeScore + ...
